@@ -105,24 +105,70 @@ function initNavbar() {
 // Search Functionality
 // ========================================
 function initSearch() {
-    const searchToggle = document.getElementById('searchToggle');
     const searchOverlay = document.getElementById('searchOverlay');
     const searchClose = document.getElementById('searchClose');
     const searchInput = document.getElementById('searchInput');
     const searchForm = document.getElementById('searchForm');
+    const navSearchInput = document.getElementById('navSearchInput');
     
-    if (!searchToggle || !searchOverlay) return;
+    // Destination keyword map
+    const destinationMap = {
+        'italy': 'italy', 'rome': 'italy', 'venice': 'italy', 'florence': 'italy', 'amalfi': 'italy', 'tuscany': 'italy', 'cinque terre': 'italy',
+        'japan': 'japan', 'tokyo': 'japan', 'kyoto': 'japan', 'osaka': 'japan',
+        'bali': 'bali', 'indonesia': 'bali', 'ubud': 'bali',
+        'greece': 'greece', 'santorini': 'greece', 'athens': 'greece', 'mykonos': 'greece',
+        'thailand': 'thailand', 'bangkok': 'thailand', 'phuket': 'thailand', 'phi phi': 'thailand',
+        'mexico': 'mexico', 'tulum': 'mexico', 'cancun': 'mexico',
+        'iceland': 'iceland', 'reykjavik': 'iceland',
+        'portugal': 'portugal', 'lisbon': 'portugal', 'porto': 'portugal', 'algarve': 'portugal',
+        'spain': 'spain', 'barcelona': 'spain', 'madrid': 'spain',
+        'france': 'france', 'paris': 'france', 'provence': 'france',
+        'vietnam': 'vietnam', 'hanoi': 'vietnam', 'ho chi minh': 'vietnam',
+        'sri lanka': 'srilanka', 'srilanka': 'srilanka',
+        'costa rica': 'costarica', 'costarica': 'costarica',
+        'peru': 'peru', 'machu picchu': 'peru', 'cusco': 'peru',
+        'colombia': 'colombia', 'medellin': 'colombia',
+        'maldives': 'maldives',
+        'morocco': 'morocco', 'marrakech': 'morocco',
+        'australia': 'australia', 'sydney': 'australia',
+        'india': 'india',
+        'egypt': 'egypt',
+        'brazil': 'brazil',
+        'netherlands': 'netherlands', 'amsterdam': 'netherlands',
+        'croatia': 'croatia', 'dubrovnik': 'croatia',
+        'norway': 'norway',
+        'new zealand': 'newzealand',
+        'tanzania': 'tanzania', 'kilimanjaro': 'tanzania'
+    };
     
-    // Toggle search overlay
-    searchToggle.addEventListener('click', () => {
-        searchOverlay.classList.add('active');
-        setTimeout(() => {
-            searchInput.focus();
-        }, 100);
-    });
+    function performSearch(query) {
+        query = query.trim().toLowerCase();
+        if (!query) return;
+        
+        // Find matching destination
+        for (const [key, dest] of Object.entries(destinationMap)) {
+            if (query.includes(key)) {
+                window.location.href = `destination.html?d=${dest}`;
+                return;
+            }
+        }
+        
+        // If no exact match, go to destinations page with search query
+        window.location.href = `destinations.html?search=${encodeURIComponent(query)}`;
+    }
     
-    // Close search overlay
-    if (searchClose) {
+    // Inline navbar search
+    if (navSearchInput) {
+        navSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch(navSearchInput.value);
+            }
+        });
+    }
+    
+    // Search overlay close
+    if (searchClose && searchOverlay) {
         searchClose.addEventListener('click', () => {
             searchOverlay.classList.remove('active');
         });
@@ -130,7 +176,7 @@ function initSearch() {
     
     // Close on escape key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+        if (e.key === 'Escape' && searchOverlay && searchOverlay.classList.contains('active')) {
             searchOverlay.classList.remove('active');
         }
     });
@@ -139,40 +185,7 @@ function initSearch() {
     if (searchForm) {
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const query = searchInput.value.trim().toLowerCase();
-            
-            if (query) {
-                // Map search terms to destinations
-                const destinationMap = {
-                    'italy': 'italy', 'rome': 'italy', 'venice': 'italy', 'florence': 'italy', 'amalfi': 'italy', 'tuscany': 'italy',
-                    'japan': 'japan', 'tokyo': 'japan', 'kyoto': 'japan',
-                    'bali': 'bali', 'indonesia': 'bali', 'ubud': 'bali',
-                    'greece': 'greece', 'santorini': 'greece', 'athens': 'greece',
-                    'thailand': 'thailand', 'bangkok': 'thailand', 'phuket': 'thailand',
-                    'mexico': 'mexico', 'tulum': 'mexico', 'cancun': 'mexico',
-                    'iceland': 'iceland', 'reykjavik': 'iceland',
-                    'portugal': 'portugal', 'lisbon': 'portugal', 'porto': 'portugal',
-                    'spain': 'spain', 'barcelona': 'spain', 'madrid': 'spain',
-                    'france': 'france', 'paris': 'france',
-                    'vietnam': 'vietnam', 'hanoi': 'vietnam',
-                    'sri lanka': 'srilanka', 'srilanka': 'srilanka',
-                    'costa rica': 'costarica', 'costarica': 'costarica',
-                    'peru': 'peru', 'machu picchu': 'peru',
-                    'colombia': 'colombia'
-                };
-                
-                // Find matching destination
-                for (const [key, dest] of Object.entries(destinationMap)) {
-                    if (query.includes(key)) {
-                        window.location.href = `destination.html?d=${dest}`;
-                        return;
-                    }
-                }
-                
-                // Default: go to destinations section
-                searchOverlay.classList.remove('active');
-                document.getElementById('destinations')?.scrollIntoView({ behavior: 'smooth' });
-            }
+            performSearch(searchInput.value);
         });
     }
 }
@@ -589,7 +602,6 @@ function initWhereToGo() {
             <a href="${dest.link}" class="destination-card-month">
                 <img src="${dest.image}" alt="${dest.name}">
                 <div class="overlay">
-                    <span class="flag">${dest.flag}</span>
                     <h3>${dest.name}</h3>
                     <span class="weather">${dest.weather}</span>
                     <p class="reason">${dest.reason}</p>

@@ -128,8 +128,7 @@
 .destination-nav {
     background: white;
     border-bottom: 1px solid var(--color-border);
-    position: sticky;
-    top: 60px;
+    position: relative;
     z-index: 100;
 }
 

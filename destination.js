@@ -355,7 +355,6 @@ let editingItinerary = null;
 const elements = {
     pageTitle: document.getElementById('pageTitle'),
     destinationHero: document.getElementById('destinationHero'),
-    destinationFlag: document.getElementById('destinationFlag'),
     destinationName: document.getElementById('destinationName'),
     destinationTagline: document.getElementById('destinationTagline'),
     itineraryCount: document.getElementById('itineraryCount'),
@@ -397,7 +396,6 @@ function loadDestination(slug) {
     // Update page
     document.title = `${currentDestination.name} Travel Guide - Itinerant Pixels`;
     elements.destinationHero.style.backgroundImage = `url(${currentDestination.heroImage})`;
-    elements.destinationFlag.textContent = currentDestination.flag;
     elements.destinationName.textContent = currentDestination.name;
     elements.destinationTagline.textContent = currentDestination.tagline;
     
