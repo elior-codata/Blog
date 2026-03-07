@@ -385,104 +385,87 @@ function initFilmStrip() {
         track.appendChild(clone);
     });
     
-    let scrollPosition = 0;
-    let isAnimating = false;
-    let autoScrollPaused = false;
+    // Remove CSS animation — we drive everything from JS
+    track.style.animation = 'none';
     
-    // Get frame width including any gap
+    let position = 0;           // current translateX in px
+    let paused = false;          // whether auto-scroll is paused
+    let manualAnimating = false; // whether a manual click transition is running
+    let lastTime = null;
+    const speed = 0.75;          // px per ms  (~same as CSS 40s for full width)
+    
     function getFrameWidth() {
         const frame = track.querySelector('.film-frame');
         return frame ? frame.offsetWidth : 280;
     }
     
-    // Scroll by a certain number of frames
-    function scrollByFrames(count) {
-        if (isAnimating) return;
-        
-        isAnimating = true;
-        const frameWidth = getFrameWidth();
-        const scrollAmount = frameWidth * count;
-        const totalWidth = frameWidth * frames.length;
-        
-        // Pause the CSS animation
-        track.style.animation = 'none';
-        
-        // Get current transform position
-        const currentTransform = getComputedStyle(track).transform;
-        let currentX = 0;
-        if (currentTransform !== 'none') {
-            const matrix = new DOMMatrix(currentTransform);
-            currentX = matrix.m41;
+    function getHalfWidth() {
+        // total width of original frames = half the track (since we cloned)
+        return getFrameWidth() * frames.length;
+    }
+    
+    // Wrap position so it stays in [-halfWidth, 0]
+    function wrapPosition() {
+        const half = getHalfWidth();
+        while (position < -half) position += half;
+        while (position > 0) position -= half;
+    }
+    
+    function applyPosition() {
+        track.style.transform = `translateX(${position}px)`;
+    }
+    
+    // Continuous auto-scroll loop driven by requestAnimationFrame
+    function tick(timestamp) {
+        if (!paused && !manualAnimating) {
+            if (lastTime !== null) {
+                const dt = timestamp - lastTime;
+                position -= speed * dt;
+                wrapPosition();
+                applyPosition();
+            }
+            lastTime = timestamp;
+        } else {
+            lastTime = null; // reset so we don't get a big jump on resume
         }
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    
+    // Manual scroll on arrow click — smooth transition, then auto-scroll resumes from new position
+    function manualScroll(count) {
+        if (manualAnimating) return;
+        manualAnimating = true;
         
-        // Calculate new position
-        let newX = currentX - scrollAmount;
+        const scrollAmount = getFrameWidth() * count;
+        let target = position - scrollAmount;
+        // wrap target
+        const half = getHalfWidth();
+        while (target < -half) target += half;
+        while (target > 0) target -= half;
         
-        // Handle wrapping
-        if (newX < -totalWidth) {
-            newX = newX + totalWidth;
-        } else if (newX > 0) {
-            newX = newX - totalWidth;
-        }
-        
-        // Apply smooth transition
         track.style.transition = 'transform 0.5s ease';
-        track.style.transform = `translateX(${newX}px)`;
+        track.style.transform = `translateX(${target}px)`;
         
         setTimeout(() => {
             track.style.transition = 'none';
-            isAnimating = false;
-            
-            // Resume auto-scroll if not paused
-            if (!autoScrollPaused) {
-                resumeAutoScroll(newX);
-            }
+            position = target;
+            manualAnimating = false;
         }, 500);
     }
     
-    function resumeAutoScroll(fromPosition) {
-        const frameWidth = getFrameWidth();
-        const totalWidth = frameWidth * frames.length;
-        
-        // Calculate remaining animation time based on position
-        const progress = Math.abs(fromPosition) / totalWidth;
-        const remainingTime = 40 * (1 - progress);
-        
-        track.style.transform = `translateX(${fromPosition}px)`;
-        
-        // Use requestAnimationFrame for smooth resume
-        requestAnimationFrame(() => {
-            track.style.transition = 'none';
-            track.style.animation = `filmScroll ${remainingTime}s linear infinite`;
-            track.style.animationDelay = '0s';
-        });
-    }
-    
-    // Button event listeners
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            scrollByFrames(-2); // Scroll left by 2 frames
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            scrollByFrames(2); // Scroll right by 2 frames
-        });
-    }
-    
-    // Pause auto-scroll on hover
-    track.addEventListener('mouseenter', () => {
-        autoScrollPaused = true;
-        track.style.animationPlayState = 'paused';
+    // Arrow buttons: hover pauses, click scrolls manually
+    [prevBtn, nextBtn].forEach((btn, i) => {
+        if (!btn) return;
+        const count = i === 0 ? -2 : 2;
+        btn.addEventListener('click', () => manualScroll(count));
+        btn.addEventListener('mouseenter', () => { paused = true; });
+        btn.addEventListener('mouseleave', () => { paused = false; });
     });
     
-    track.addEventListener('mouseleave', () => {
-        autoScrollPaused = false;
-        if (!isAnimating) {
-            track.style.animationPlayState = 'running';
-        }
-    });
+    // Pause on track hover too
+    track.addEventListener('mouseenter', () => { paused = true; });
+    track.addEventListener('mouseleave', () => { paused = false; });
 }
 
 // ========================================

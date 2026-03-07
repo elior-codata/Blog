@@ -351,26 +351,39 @@ let itineraries = [];
 let isAdminMode = false;
 let editingItinerary = null;
 
-// DOM Elements
-const elements = {
-    pageTitle: document.getElementById('pageTitle'),
-    destinationHero: document.getElementById('destinationHero'),
-    destinationName: document.getElementById('destinationName'),
-    destinationTagline: document.getElementById('destinationTagline'),
-    itineraryCount: document.getElementById('itineraryCount'),
-    itinerariesGrid: document.getElementById('itinerariesGrid'),
-    adminBar: document.getElementById('adminBar')
-};
+// DOM Elements - initialized safely
+let elements = {};
+
+function initElements() {
+    elements = {
+        pageTitle: document.getElementById('pageTitle'),
+        destinationHero: document.getElementById('destinationHero'),
+        destinationName: document.getElementById('destinationName'),
+        destinationTagline: document.getElementById('destinationTagline'),
+        itineraryCount: document.getElementById('itineraryCount'),
+        itinerariesGrid: document.getElementById('itinerariesGrid'),
+        adminBar: document.getElementById('adminBar')
+    };
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    initElements();
+
     const urlParams = new URLSearchParams(window.location.search);
     const destinationSlug = urlParams.get('d') || urlParams.get('country') || 'italy';
     
-    loadDestination(destinationSlug);
+    // Always run initEventListeners even if loadDestination fails
+    try {
+        loadDestination(destinationSlug);
+    } catch (e) {
+        console.error('Error loading destination:', e);
+    }
+    
     initEventListeners();
-    initAdminMode();
-    initAuth();
+    
+    try { initAdminMode(); } catch(e) { console.error('initAdminMode error:', e); }
+    try { initAuth(); } catch(e) { console.error('initAuth error:', e); }
     
     // Secret admin login: Ctrl+Shift+L
     document.addEventListener('keydown', (e) => {
@@ -383,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Load any custom edits
-    loadCustomData();
+    try { loadCustomData(); } catch(e) { console.error('loadCustomData error:', e); }
 });
 
 // ========================================
@@ -395,9 +408,9 @@ function loadDestination(slug) {
     
     // Update page
     document.title = `${currentDestination.name} Travel Guide - Itinerant Pixels`;
-    elements.destinationHero.style.backgroundImage = `url(${currentDestination.heroImage})`;
-    elements.destinationName.textContent = currentDestination.name;
-    elements.destinationTagline.textContent = currentDestination.tagline;
+    if (elements.destinationHero) elements.destinationHero.style.backgroundImage = `url(${currentDestination.heroImage})`;
+    if (elements.destinationName) elements.destinationName.textContent = currentDestination.name;
+    if (elements.destinationTagline) elements.destinationTagline.textContent = currentDestination.tagline;
     
     // Update section titles dynamically
     updateSectionTitles(currentDestination.name);
@@ -476,7 +489,7 @@ async function loadItineraries(destinationSlug) {
     }
     
     // Update counts
-    elements.itineraryCount.textContent = itineraries.length;
+    if (elements.itineraryCount) elements.itineraryCount.textContent = itineraries.length;
     
     renderItineraries();
     
@@ -604,7 +617,7 @@ function toggleAdminMode() {
 }
 
 function updateAdminUI() {
-    elements.adminBar.classList.toggle('active', isAdminMode);
+    if (elements.adminBar) elements.adminBar.classList.toggle('active', isAdminMode);
     document.body.classList.toggle('admin-mode', isAdminMode);
 }
 
@@ -751,18 +764,27 @@ function initAuth() {
 }
 
 function showLoginModal() {
-    document.getElementById('loginModal').classList.add('active');
-    document.getElementById('adminPassword').focus();
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.classList.add('active');
+        const pw = document.getElementById('adminPassword');
+        if (pw) pw.focus();
+    }
 }
 
 function hideLoginModal() {
-    document.getElementById('loginModal').classList.remove('active');
-    document.getElementById('adminPassword').value = '';
-    document.getElementById('loginError').style.display = 'none';
+    const modal = document.getElementById('loginModal');
+    if (modal) modal.classList.remove('active');
+    const pw = document.getElementById('adminPassword');
+    if (pw) pw.value = '';
+    const err = document.getElementById('loginError');
+    if (err) err.style.display = 'none';
 }
 
 function attemptLogin() {
-    const password = document.getElementById('adminPassword').value;
+    const pwField = document.getElementById('adminPassword');
+    if (!pwField) return;
+    const password = pwField.value;
     
     if (password === ADMIN_PASSWORD) {
         isAuthenticated = true;
@@ -770,9 +792,10 @@ function attemptLogin() {
         hideLoginModal();
         initAuth(); // Show edit button
     } else {
-        document.getElementById('loginError').style.display = 'block';
-        document.getElementById('adminPassword').value = '';
-        document.getElementById('adminPassword').focus();
+        const err = document.getElementById('loginError');
+        if (err) err.style.display = 'block';
+        pwField.value = '';
+        pwField.focus();
     }
 }
 
@@ -789,8 +812,10 @@ function logout() {
 function toggleEditMode() {
     isEditMode = !isEditMode;
     document.body.classList.toggle('edit-mode', isEditMode);
-    document.getElementById('editToolbar').classList.toggle('active', isEditMode);
-    document.getElementById('floatingEditBtn').classList.toggle('active', isEditMode);
+    const toolbar = document.getElementById('editToolbar');
+    const editBtn = document.getElementById('floatingEditBtn');
+    if (toolbar) toolbar.classList.toggle('active', isEditMode);
+    if (editBtn) editBtn.classList.toggle('active', isEditMode);
     
     if (isEditMode) {
         enableEditableElements();
@@ -1350,6 +1375,12 @@ function deleteCustomSection(sectionId) {
 // ========================================
 
 function initEventListeners() {
+    // Helper: safely add click listener by ID
+    function onClickById(id, handler) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', handler);
+    }
+
     // Tab navigation
     document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.addEventListener('click', () => {
@@ -1357,24 +1388,28 @@ function initEventListeners() {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             
             tab.classList.add('active');
-            document.getElementById(tab.dataset.section).classList.add('active');
+            const section = document.getElementById(tab.dataset.section);
+            if (section) section.classList.add('active');
         });
     });
     
     // Duration filter
-    document.getElementById('durationFilter').addEventListener('change', (e) => {
-        renderItineraries(e.target.value);
-    });
+    const durationFilter = document.getElementById('durationFilter');
+    if (durationFilter) {
+        durationFilter.addEventListener('change', (e) => {
+            renderItineraries(e.target.value);
+        });
+    }
     
     // Admin buttons
-    document.getElementById('addItineraryBtn').addEventListener('click', openAddItinerary);
-    document.getElementById('toggleAdminBtn').addEventListener('click', toggleAdminMode);
+    onClickById('addItineraryBtn', openAddItinerary);
+    onClickById('toggleAdminBtn', toggleAdminMode);
     
     // Edit mode buttons
-    document.getElementById('floatingEditBtn').addEventListener('click', toggleEditMode);
-    document.getElementById('exitEditBtn').addEventListener('click', toggleEditMode);
-    document.getElementById('saveChangesBtn').addEventListener('click', saveAllChanges);
-    document.getElementById('addItineraryInlineBtn').addEventListener('click', openAddItinerary);
+    onClickById('floatingEditBtn', toggleEditMode);
+    onClickById('exitEditBtn', toggleEditMode);
+    onClickById('saveChangesBtn', saveAllChanges);
+    onClickById('addItineraryInlineBtn', openAddItinerary);
     
     // Quick add itinerary
     const quickAddCard = document.querySelector('.quick-add-card');
@@ -1394,7 +1429,7 @@ function initEventListeners() {
     // Navbar scroll
     window.addEventListener('scroll', () => {
         const navbar = document.querySelector('.navbar');
-        navbar.classList.toggle('scrolled', window.scrollY > 50);
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
     });
 }
 
@@ -1620,7 +1655,22 @@ function searchCars() {
     window.open(carUrl, '_blank');
 }
 
+// ========================================
+// Global Tab Switching
+// ========================================
+
+function switchTab(sectionName) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    const clickedTab = document.querySelector(`.nav-tab[data-section="${sectionName}"]`);
+    if (clickedTab) clickedTab.classList.add('active');
+    const section = document.getElementById(sectionName);
+    if (section) section.classList.add('active');
+}
+
 // Make functions globally available
+window.switchTab = switchTab;
+window.toggleEditMode = toggleEditMode;
 window.openAddItinerary = openAddItinerary;
 window.editItinerary = editItinerary;
 window.deleteItinerary = deleteItinerary;
