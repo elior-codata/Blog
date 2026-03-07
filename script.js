@@ -392,7 +392,7 @@ function initFilmStrip() {
     let paused = false;          // whether auto-scroll is paused
     let manualAnimating = false; // whether a manual click transition is running
     let lastTime = null;
-    const speed = 0.75;          // px per ms  (~same as CSS 40s for full width)
+    const speed = 0.03;          // px per ms  (slow gentle drift)
     
     function getFrameWidth() {
         const frame = track.querySelector('.film-frame');
@@ -444,14 +444,15 @@ function initFilmStrip() {
         while (target < -half) target += half;
         while (target > 0) target -= half;
         
-        track.style.transition = 'transform 0.5s ease';
+        track.style.transition = 'transform 0.6s ease';
         track.style.transform = `translateX(${target}px)`;
         
         setTimeout(() => {
             track.style.transition = 'none';
             position = target;
+            lastTime = null;  // reset so auto-scroll resumes smoothly at same speed
             manualAnimating = false;
-        }, 500);
+        }, 620);
     }
     
     // Arrow buttons: hover pauses, click scrolls manually

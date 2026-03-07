@@ -1407,7 +1407,8 @@ function initEventListeners() {
     onClickById('toggleAdminBtn', toggleAdminMode);
     
     // Edit mode buttons
-    onClickById('floatingEditBtn', toggleEditMode);
+    // NOTE: floatingEditBtn uses inline onclick="toggleEditMode()" in HTML
+    // Do NOT add addEventListener here — double-binding causes toggleEditMode to fire twice and cancel itself
     onClickById('exitEditBtn', toggleEditMode);
     onClickById('saveChangesBtn', saveAllChanges);
     onClickById('addItineraryInlineBtn', openAddItinerary);
