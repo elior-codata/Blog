@@ -527,6 +527,8 @@ async function saveItineraries(destinationSlug = null) {
 // ========================================
 
 function renderItineraries(filter = 'all') {
+    if (!elements.itinerariesGrid) return;
+    
     const filtered = filter === 'all' 
         ? itineraries 
         : itineraries.filter(it => it.durationCode === filter);
@@ -747,8 +749,7 @@ let isEditMode = false;
 
 // Simple Authentication
 // NOTE: This is frontend-only auth - NOT secure for sensitive data
-// Change this password to your own
-const ADMIN_PASSWORD = 'itinerant2026';
+// ADMIN_PASSWORD is defined in script.js (shared across all pages)
 let isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
 
 function checkAuth() {
