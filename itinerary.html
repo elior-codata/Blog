@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerary - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="itinerary.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="destination.html" class="nav-link" id="backToDestination">← Back to Destination</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="itinerary-hero" id="itineraryHero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="itinerary-duration editable" id="itineraryDuration" data-field="duration">7 Days</span>
+            <h1 id="itineraryTitle" class="editable" data-field="title">Loading...</h1>
+            <div class="itinerary-meta">
+                <span id="itineraryRegions" class="editable" data-field="regions">📍 Regions</span>
+                <span id="itineraryAuthor">✍️ Author</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Edit Mode Toolbar -->
+    <div class="edit-toolbar" id="editToolbar">
+        <div class="edit-toolbar-inner">
+            <span class="edit-mode-label">✏️ Edit Mode</span>
+            <div class="edit-toolbar-actions">
+                <button class="edit-toolbar-btn" id="addDayBtn">+ Add Day</button>
+                <button class="edit-toolbar-btn save" id="saveChangesBtn">💾 Save All</button>
+                <button class="edit-toolbar-btn cancel" id="exitEditBtn">✕ Exit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="itinerary-main">
+        <div class="container">
+            <!-- Description -->
+            <section class="itinerary-description-section">
+                <p id="itineraryDescription" class="editable" data-field="description"></p>
+            </section>
+
+            <!-- Highlights -->
+            <section class="itinerary-highlights-section" id="highlightsSection" style="display: none;">
+                <h2>✨ Trip Highlights</h2>
+                <div class="highlights-grid" id="highlightsGrid"></div>
+                <div class="highlights-editor" id="highlightsEditor" style="display: none;">
+                    <textarea id="highlightsInput" placeholder="Enter highlights (one per line)..."></textarea>
+                    <button class="inline-action-btn" onclick="applyHighlightsEdit()">Apply</button>
+                </div>
+            </section>
+
+            <!-- Day by Day -->
+            <section class="day-by-day-section" id="dayByDaySection" style="display: none;">
+                <h2>Day by Day Itinerary</h2>
+                <div class="timeline" id="daysTimeline"></div>
+            </section>
+
+            <!-- Practical Info -->
+            <section class="practical-info-section" id="practicalSection" style="display: none;">
+                <h2>📋 Practical Information</h2>
+                <div class="info-cards" id="practicalInfo"></div>
+            </section>
+
+            <!-- Book Your Trip -->
+            <section class="book-trip-section">
+                <h2>🎒 Book Your Trip</h2>
+                <p class="book-trip-subtitle">Everything you need to make this itinerary happen</p>
+                <div class="affiliate-cards">
+                    <a href="#" class="affiliate-card hotel-card" id="hotelLink" target="_blank" rel="noopener">
+                        <div class="affiliate-icon">🏨</div>
+                        <div class="affiliate-info">
+                            <h3>Find Hotels</h3>
+                            <p>Best stays along the route</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <a href="#" class="affiliate-card car-card" id="carLink" target="_blank" rel="noopener">
+                        <div class="affiliate-icon">🚗</div>
+                        <div class="affiliate-info">
+                            <h3>Rent a Car</h3>
+                            <p>Freedom to explore</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <a href="#" class="affiliate-card tours-card" id="toursLink" target="_blank" rel="noopener">
+                        <div class="affiliate-icon">🎫</div>
+                        <div class="affiliate-info">
+                            <h3>Book Tours</h3>
+                            <p>Guided experiences & tickets</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Back to Destination -->
+            <div class="back-section">
+                <a href="#" class="back-btn" id="backBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Explore More Itineraries
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 Itinerant Pixels • Made with ♥ for travelers everywhere</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Edit Button -->
+    <button class="floating-edit-btn" id="editItineraryBtn" title="Edit Itinerary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+    </button>
+
+    <script src="codata-api.js"></script>
+    <script src="itinerary.js"></script>
+</body>
+</html>

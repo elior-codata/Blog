@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventures - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="adventures.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-item dropdown">
+                    <a href="index.html#destinations" class="nav-link">Destinations</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Europe</h4>
+                            <a href="destination.html?d=italy">🇮🇹 Italy</a>
+                            <a href="destination.html?d=greece">🇬🇷 Greece</a>
+                            <a href="destination.html?d=portugal">🇵🇹 Portugal</a>
+                            <a href="destination.html?d=spain">🇪🇸 Spain</a>
+                            <a href="destination.html?d=france">🇫🇷 France</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Asia</h4>
+                            <a href="destination.html?d=bali">🇮🇩 Bali</a>
+                            <a href="destination.html?d=japan">🇯🇵 Japan</a>
+                            <a href="destination.html?d=thailand">🇹🇭 Thailand</a>
+                            <a href="destination.html?d=vietnam">🇻🇳 Vietnam</a>
+                            <a href="destination.html?d=srilanka">🇱🇰 Sri Lanka</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Americas</h4>
+                            <a href="destination.html?d=mexico">🇲🇽 Mexico</a>
+                            <a href="destination.html?d=costarica">🇨🇷 Costa Rica</a>
+                            <a href="destination.html?d=peru">🇵🇪 Peru</a>
+                            <a href="destination.html?d=colombia">🇨🇴 Colombia</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item"><a href="adventures.html" class="nav-link active">Adventures</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+            </ul>
+            <div class="nav-social">
+                <button class="nav-search-btn" id="searchToggle" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="adventures-hero">
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80" alt="Road trip adventure">
+        </div>
+        <div class="hero-content">
+            <span class="hero-subtitle">Epic Journeys</span>
+            <h1>Our Adventures</h1>
+            <p class="hero-tagline">Multi-month expeditions across continents, cultures, and landscapes</p>
+        </div>
+    </header>
+
+    <!-- Adventures Grid -->
+    <section class="adventures-section">
+        <div class="container">
+            <div class="adventures-intro">
+                <p>These aren't just trips—they're life-changing journeys. Join us as we document our longest and most ambitious adventures, complete with detailed itineraries, budgets, and everything you need to plan your own epic expedition.</p>
+            </div>
+
+            <div class="adventures-grid">
+                <!-- Adventure 1: One Year Around the World -->
+                <article class="adventure-card featured">
+                    <div class="adventure-image">
+                        <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80" alt="World map with pins">
+                        <div class="adventure-badge">Featured</div>
+                        <div class="adventure-status ongoing">Ongoing</div>
+                    </div>
+                    <div class="adventure-content">
+                        <div class="adventure-meta">
+                            <span class="adventure-icon">🌍</span>
+                            <span class="adventure-duration">12 Months</span>
+                        </div>
+                        <h2>One Year Around the World</h2>
+                        <p class="adventure-description">Our biggest adventure yet! We quit our jobs, sold everything, and set off to circumnavigate the globe. From the temples of Asia to the wilderness of Patagonia.</p>
+                        <div class="adventure-stats">
+                            <div class="stat">
+                                <span class="stat-value">25</span>
+                                <span class="stat-label">Countries</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">6</span>
+                                <span class="stat-label">Continents</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">365</span>
+                                <span class="stat-label">Days</span>
+                            </div>
+                        </div>
+                        <div class="adventure-route">
+                            <span class="route-label">Route:</span>
+                            <span class="route-path">🇺🇸 → 🇯🇵 → 🇹🇭 → 🇮🇳 → 🇹🇿 → 🇿🇦 → 🇧🇷 → 🇦🇷 → 🇵🇪 → 🇲🇽 → 🇺🇸</span>
+                        </div>
+                        <a href="#" class="adventure-link">Follow This Adventure →</a>
+                    </div>
+                </article>
+
+                <!-- Adventure 2: Africa Roadtrip -->
+                <article class="adventure-card">
+                    <div class="adventure-image">
+                        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80" alt="African safari landscape">
+                        <div class="adventure-status completed">Completed</div>
+                    </div>
+                    <div class="adventure-content">
+                        <div class="adventure-meta">
+                            <span class="adventure-icon">🚗</span>
+                            <span class="adventure-duration">5 Months</span>
+                        </div>
+                        <h2>Cape to Cairo Roadtrip</h2>
+                        <p class="adventure-description">An epic overland journey from South Africa to Egypt. Through savannas, deserts, and everything in between.</p>
+                        <div class="adventure-stats">
+                            <div class="stat">
+                                <span class="stat-value">8</span>
+                                <span class="stat-label">Countries</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">15K</span>
+                                <span class="stat-label">Kilometers</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">150</span>
+                                <span class="stat-label">Days</span>
+                            </div>
+                        </div>
+                        <div class="adventure-route">
+                            <span class="route-label">Route:</span>
+                            <span class="route-path">🇿🇦 → 🇧🇼 → 🇿🇲 → 🇹🇿 → 🇰🇪 → 🇪🇹 → 🇸🇩 → 🇪🇬</span>
+                        </div>
+                        <a href="#" class="adventure-link">Read Full Story →</a>
+                    </div>
+                </article>
+
+                <!-- Adventure 3: South America -->
+                <article class="adventure-card">
+                    <div class="adventure-image">
+                        <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=800&q=80" alt="Machu Picchu">
+                        <div class="adventure-status completed">Completed</div>
+                    </div>
+                    <div class="adventure-content">
+                        <div class="adventure-meta">
+                            <span class="adventure-icon">🏔️</span>
+                            <span class="adventure-duration">3 Months</span>
+                        </div>
+                        <h2>Andes to Amazon</h2>
+                        <p class="adventure-description">From the peaks of the Andes to the depths of the Amazon rainforest. South America stole our hearts.</p>
+                        <div class="adventure-stats">
+                            <div class="stat">
+                                <span class="stat-value">6</span>
+                                <span class="stat-label">Countries</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">4.8K</span>
+                                <span class="stat-label">Max Altitude</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">90</span>
+                                <span class="stat-label">Days</span>
+                            </div>
+                        </div>
+                        <div class="adventure-route">
+                            <span class="route-label">Route:</span>
+                            <span class="route-path">🇧🇷 → 🇦🇷 → 🇨🇱 → 🇧🇴 → 🇵🇪 → 🇨🇴</span>
+                        </div>
+                        <a href="#" class="adventure-link">Read Full Story →</a>
+                    </div>
+                </article>
+
+                <!-- Adventure 4: Southeast Asia -->
+                <article class="adventure-card">
+                    <div class="adventure-image">
+                        <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80" alt="Thailand temple">
+                        <div class="adventure-status completed">Completed</div>
+                    </div>
+                    <div class="adventure-content">
+                        <div class="adventure-meta">
+                            <span class="adventure-icon">🛵</span>
+                            <span class="adventure-duration">4 Months</span>
+                        </div>
+                        <h2>Southeast Asia Backpacking</h2>
+                        <p class="adventure-description">Our first big adventure together. Budget backpacking through the temples, beaches, and street food capitals of SE Asia.</p>
+                        <div class="adventure-stats">
+                            <div class="stat">
+                                <span class="stat-value">7</span>
+                                <span class="stat-label">Countries</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">$25</span>
+                                <span class="stat-label">Per Day</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">120</span>
+                                <span class="stat-label">Days</span>
+                            </div>
+                        </div>
+                        <div class="adventure-route">
+                            <span class="route-label">Route:</span>
+                            <span class="route-path">🇹🇭 → 🇱🇦 → 🇻🇳 → 🇰🇭 → 🇲🇾 → 🇮🇩 → 🇵🇭</span>
+                        </div>
+                        <a href="#" class="adventure-link">Read Full Story →</a>
+                    </div>
+                </article>
+
+                <!-- Adventure 5: Van Life Europe -->
+                <article class="adventure-card">
+                    <div class="adventure-image">
+                        <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=800&q=80" alt="Camper van in mountains">
+                        <div class="adventure-status completed">Completed</div>
+                    </div>
+                    <div class="adventure-content">
+                        <div class="adventure-meta">
+                            <span class="adventure-icon">🚐</span>
+                            <span class="adventure-duration">6 Months</span>
+                        </div>
+                        <h2>Van Life Europe</h2>
+                        <p class="adventure-description">We converted a van and hit the road across Europe. Wild camping, hidden beaches, and total freedom.</p>
+                        <div class="adventure-stats">
+                            <div class="stat">
+                                <span class="stat-value">15</span>
+                                <span class="stat-label">Countries</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">20K</span>
+                                <span class="stat-label">Kilometers</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">180</span>
+                                <span class="stat-label">Days</span>
+                            </div>
+                        </div>
+                        <div class="adventure-route">
+                            <span class="route-label">Route:</span>
+                            <span class="route-path">🇵🇹 → 🇪🇸 → 🇫🇷 → 🇮🇹 → 🇭🇷 → 🇬🇷 → 🇦🇱 → 🇲🇪</span>
+                        </div>
+                        <a href="#" class="adventure-link">Read Full Story →</a>
+                    </div>
+                </article>
+
+                <!-- Adventure 6: Japan Deep Dive -->
+                <article class="adventure-card">
+                    <div class="adventure-image">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Japanese temple">
+                        <div class="adventure-status planned">Coming 2026</div>
+                    </div>
+                    <div class="adventure-content">
+                        <div class="adventure-meta">
+                            <span class="adventure-icon">🗾</span>
+                            <span class="adventure-duration">2 Months</span>
+                        </div>
+                        <h2>Japan Deep Dive</h2>
+                        <p class="adventure-description">Beyond Tokyo and Kyoto. We're planning to explore rural Japan, from Hokkaido to Okinawa, by rail and bike.</p>
+                        <div class="adventure-stats">
+                            <div class="stat">
+                                <span class="stat-value">47</span>
+                                <span class="stat-label">Prefectures</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">JR</span>
+                                <span class="stat-label">Rail Pass</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">60</span>
+                                <span class="stat-label">Days</span>
+                            </div>
+                        </div>
+                        <div class="adventure-route">
+                            <span class="route-label">Planned:</span>
+                            <span class="route-path">Tokyo → Tohoku → Hokkaido → Kyushu → Okinawa</span>
+                        </div>
+                        <a href="#" class="adventure-link">Follow Planning →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="adventures-cta">
+        <div class="container">
+            <h2>Planning Your Own Adventure?</h2>
+            <p>We share all our itineraries, budgets, packing lists, and tips. Subscribe to get our adventure planning guides.</p>
+            <form class="cta-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit">Get Adventure Guides</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="footer-logo">Itinerant Pixels</a>
+                    <p>Inspiring travel guides to the world's most beautiful destinations.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="adventures.html">Adventures</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#shop">Shop</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Itinerant Pixels. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="codata-api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

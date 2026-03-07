@@ -1,0 +1,878 @@
+/* ========================================
+   Itinerary Editor Styles
+   ======================================== */
+
+/* Editor Navigation */
+.editor-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.editor-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.back-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--primary-color, #2c5530);
+}
+
+.editor-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.editor-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.save-status {
+    font-size: 0.85rem;
+    color: #999;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.save-status.saved {
+    color: #2c5530;
+}
+
+.btn-secondary {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #ddd;
+    background: white;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+}
+
+.btn-primary {
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, #2c5530, #3d7242);
+    color: white;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(44, 85, 48, 0.3);
+}
+
+/* Main Layout */
+.itinerary-editor-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    min-height: 100vh;
+    padding-top: 60px;
+    background: #f8f8f8;
+}
+
+/* Editor Main */
+.editor-main {
+    padding: 2rem 3rem;
+    overflow-y: auto;
+}
+
+.editor-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    padding: 2rem;
+}
+
+/* Cover Image */
+.cover-image-wrapper {
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cover-image-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, #f0f0f0, #e5e5e5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+}
+
+.cover-image-placeholder:hover {
+    background: linear-gradient(135deg, #e5e5e5, #ddd);
+    border-color: #aaa;
+}
+
+.cover-image-placeholder svg {
+    color: #999;
+}
+
+.cover-image-placeholder span {
+    color: #666;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+}
+
+.cover-url-input {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.cover-url-input:focus {
+    outline: none;
+    border-color: #2c5530;
+}
+
+.cover-image-preview {
+    position: relative;
+    height: 300px;
+}
+
+.cover-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cover-actions {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cover-btn {
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cover-btn:hover {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Meta Row */
+.meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.meta-group label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-group select {
+    padding: 0.8rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: #333;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.meta-group select:focus {
+    outline: none;
+    border-color: #2c5530;
+}
+
+/* Title */
+.title-wrapper {
+    margin-bottom: 1rem;
+}
+
+.title-wrapper textarea {
+    width: 100%;
+    border: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    resize: none;
+    overflow: hidden;
+    line-height: 1.2;
+}
+
+.title-wrapper textarea::placeholder {
+    color: #bbb;
+}
+
+.title-wrapper textarea:focus {
+    outline: none;
+}
+
+/* Regions */
+.regions-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.regions-wrapper input {
+    width: 100%;
+    padding: 0.8rem 0;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #2c5530;
+    font-weight: 500;
+}
+
+.regions-wrapper input::placeholder {
+    color: #aaa;
+    font-weight: 400;
+}
+
+.regions-wrapper input:focus {
+    outline: none;
+    border-bottom-color: #2c5530;
+}
+
+/* Description */
+.description-wrapper {
+    margin-bottom: 2rem;
+}
+
+.description-wrapper textarea {
+    width: 100%;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    resize: none;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.description-wrapper textarea::placeholder {
+    color: #999;
+}
+
+.description-wrapper textarea:focus {
+    outline: none;
+    background: #f5f5f5;
+}
+
+/* Highlights */
+.highlights-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #fafafa;
+    border-radius: 12px;
+}
+
+.highlights-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+.highlights-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.highlight-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.highlight-tag.filled {
+    background: linear-gradient(135deg, #2c5530, #3d7242);
+    color: white;
+    border: none;
+}
+
+.highlight-tag .remove-highlight {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.highlight-tag .remove-highlight:hover {
+    opacity: 1;
+}
+
+#highlightInput {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+#highlightInput:focus {
+    outline: none;
+    border-color: #2c5530;
+}
+
+/* Days Section */
+.days-section {
+    margin-bottom: 2rem;
+}
+
+.days-header {
+    margin-bottom: 1.5rem;
+}
+
+.days-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.days-header p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.days-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Individual Day Card */
+.day-card {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.day-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.day-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #2c5530, #3d7242);
+    color: white;
+}
+
+.day-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.day-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.day-action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.day-action-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.day-card-body {
+    padding: 1.5rem;
+}
+
+.day-title-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.day-title-input::placeholder {
+    color: #bbb;
+}
+
+.day-title-input:focus {
+    outline: none;
+    border-bottom-color: #2c5530;
+}
+
+.day-description-input {
+    width: 100%;
+    border: none;
+    padding: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.7;
+    min-height: 100px;
+    resize: vertical;
+    background: #fafafa;
+    border-radius: 8px;
+}
+
+.day-description-input::placeholder {
+    color: #999;
+}
+
+.day-description-input:focus {
+    outline: none;
+    background: #f5f5f5;
+}
+
+/* Day Images */
+.day-images-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.day-images-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.day-image-url-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+}
+
+.day-image-url-input:focus {
+    outline: none;
+    border-color: #2c5530;
+}
+
+/* Add Day Button */
+.add-day-btn {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px dashed #ddd;
+    background: transparent;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.add-day-btn:hover {
+    border-color: #2c5530;
+    color: #2c5530;
+    background: rgba(44, 85, 48, 0.05);
+}
+
+.add-day-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.add-day-btn:hover svg {
+    transform: rotate(90deg);
+}
+
+/* Map Section */
+.map-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #fafafa;
+    border-radius: 12px;
+}
+
+.map-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.map-section p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 1rem;
+}
+
+.map-placeholder {
+    height: 200px;
+    background: linear-gradient(135deg, #e8e8e8, #ddd);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #999;
+}
+
+.map-placeholder span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+/* Practical Section */
+.practical-section {
+    padding: 1.5rem;
+    background: #fafafa;
+    border-radius: 12px;
+}
+
+.practical-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+}
+
+.practical-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.practical-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.practical-item label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.practical-item input {
+    padding: 0.8rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+.practical-item input:focus {
+    outline: none;
+    border-color: #2c5530;
+}
+
+/* Sidebar */
+.editor-sidebar {
+    background: white;
+    border-left: 1px solid #e5e5e5;
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Preview Card in Sidebar */
+.preview-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.preview-image {
+    height: 120px;
+    background: linear-gradient(135deg, #e5e5e5, #ddd);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.preview-content {
+    padding: 1rem;
+    background: white;
+}
+
+.preview-duration {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #2c5530;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.preview-content h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    margin: 0.3rem 0;
+    color: #1a1a1a;
+    line-height: 1.3;
+}
+
+.preview-content p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    color: #777;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Stats */
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+.stat-row span {
+    color: #777;
+}
+
+.stat-row strong {
+    color: #2c5530;
+}
+
+/* Tips */
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #666;
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.tips-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #2c5530;
+}
+
+/* Preview Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.preview-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: white;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.preview-container {
+    padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .itinerary-editor-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .editor-sidebar {
+        display: none;
+    }
+    
+    .editor-main {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .editor-nav {
+        padding: 0 1rem;
+    }
+    
+    .editor-nav-left .editor-title {
+        display: none;
+    }
+    
+    .editor-main {
+        padding: 1rem;
+    }
+    
+    .editor-container {
+        padding: 1.5rem;
+    }
+    
+    .meta-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .title-wrapper textarea {
+        font-size: 1.8rem;
+    }
+    
+    .practical-grid {
+        grid-template-columns: 1fr;
+    }
+}

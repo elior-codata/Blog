@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "codata": {
+      "type": "http",
+      "url": "https://codata.io/api/mcp"
+    }
+  }
+}

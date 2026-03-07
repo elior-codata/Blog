@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Destination - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="destination.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#destinations" class="nav-link">Destinations</a></li>
+                <li class="nav-item"><a href="posts.html" class="nav-link">Travel Guides</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Destination Hero -->
+    <header class="destination-hero editable-section" id="destinationHero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="destination-flag editable" data-field="flag" id="destinationFlag">🇮🇹</span>
+            <h1 class="editable" data-field="name" id="destinationName">Italy</h1>
+            <p class="destination-tagline editable" data-field="tagline" id="destinationTagline">Discover the beauty of la dolce vita</p>
+            <div class="destination-stats">
+                <div class="stat">
+                    <span class="stat-number" id="itineraryCount">0</span>
+                    <span class="stat-label">Itineraries</span>
+                </div>
+            </div>
+        </div>
+        <button class="section-edit-btn" data-section="hero">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        </button>
+    </header>
+
+    <!-- Admin Bar -->
+    <div class="admin-bar" id="adminBar">
+        <div class="container">
+            <span>🔧 Admin Mode</span>
+            <div class="admin-actions">
+                <button class="admin-btn" id="addItineraryBtn">+ Add Itinerary</button>
+                <button class="admin-btn secondary" id="toggleAdminBtn">Exit Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <nav class="destination-nav">
+        <div class="container">
+            <div class="nav-tabs-wrapper">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-section="itineraries">Itineraries</button>
+                    <button class="nav-tab" data-section="map">Map</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Floating Edit Button -->
+    <button class="floating-edit-btn" id="floatingEditBtn" title="Edit Page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+    </button>
+
+    <!-- Edit Mode Toolbar -->
+    <div class="edit-toolbar" id="editToolbar">
+        <div class="edit-toolbar-inner">
+            <span class="edit-mode-label">✏️ Edit Mode</span>
+            <div class="edit-toolbar-actions">
+                <button class="edit-toolbar-btn" id="addItineraryInlineBtn">+ New Itinerary</button>
+                <button class="edit-toolbar-btn" onclick="window.location.href='editor.html'">+ New Post</button>
+                <button class="edit-toolbar-btn save" id="saveChangesBtn">💾 Save All</button>
+                <button class="edit-toolbar-btn cancel" id="exitEditBtn">✕ Exit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="destination-content">
+        <div class="container">
+            <!-- Section Placeholder - Before Itineraries -->
+            <div class="section-placeholder" data-position="before-itineraries">
+                <div class="add-section-inline">
+                    <button class="add-section-trigger" onclick="toggleSectionMenu(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Section
+                    </button>
+                    <div class="section-type-menu">
+                        <button class="section-type-option" onclick="addSectionDirect('before-itineraries', 'text')">📝 Text Block</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-itineraries', 'gallery')">🖼️ Photo Gallery</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-itineraries', 'tips')">💡 Travel Tips</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-itineraries', 'highlights')">⭐ Highlights</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-itineraries', 'quote')">💬 Quote</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-itineraries', 'video')">🎬 Video</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Itineraries Section -->
+            <section id="itineraries" class="content-section active editable-section">
+                <div class="section-header-row">
+                    <div>
+                        <h2 class="editable" data-field="itineraries-title" id="itinerariesTitle">Italy Itineraries</h2>
+                        <p class="editable" data-field="itineraries-subtitle">Complete travel routes to explore the best of Italy</p>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="durationFilter">
+                            <option value="all">All Durations</option>
+                            <option value="week">1 Week</option>
+                            <option value="10days">10 Days</option>
+                            <option value="2weeks">2 Weeks</option>
+                            <option value="3weeks">3 Weeks+</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Quick Add Itinerary (visible in edit mode) -->
+                <div class="quick-add-itinerary" id="quickAddItinerary">
+                    <div class="quick-add-card">
+                        <div class="quick-add-icon">+</div>
+                        <span>Add New Itinerary</span>
+                    </div>
+                </div>
+                
+                <div class="itineraries-grid" id="itinerariesGrid">
+                    <!-- Itineraries loaded dynamically -->
+                </div>
+                <button class="section-edit-btn" data-section="itineraries">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </button>
+            </section>
+
+            <!-- Section Placeholder - Between Itineraries and Map -->
+            <div class="section-placeholder" data-position="before-map">
+                <div class="add-section-inline">
+                    <button class="add-section-trigger" onclick="toggleSectionMenu(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Section
+                    </button>
+                    <div class="section-type-menu">
+                        <button class="section-type-option" onclick="addSectionDirect('before-map', 'text')">📝 Text Block</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-map', 'gallery')">🖼️ Photo Gallery</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-map', 'tips')">💡 Travel Tips</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-map', 'highlights')">⭐ Highlights</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-map', 'quote')">💬 Quote</button>
+                        <button class="section-type-option" onclick="addSectionDirect('before-map', 'video')">🎬 Video</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <section id="map" class="content-section">
+                <div class="section-header-row">
+                    <div>
+                        <h2 id="mapSectionTitle">Italy Interactive Map</h2>
+                        <p>Explore all destinations, routes, and hidden gems</p>
+                    </div>
+                </div>
+                
+                <div class="map-content-wrapper">
+                    <div class="map-locked-state" id="mapLockedState">
+                        <div class="map-preview-bg"></div>
+                        <div class="map-unlock-card">
+                            <div class="unlock-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <h3>Unlock the Full Interactive Map</h3>
+                            <p>Get instant access to our detailed interactive map with all locations, recommended routes, hidden gems, and offline access.</p>
+                            <ul class="unlock-features">
+                                <li>📍 All itinerary locations marked</li>
+                                <li>🛤️ Recommended driving/walking routes</li>
+                                <li>💎 Secret spots & local favorites</li>
+                                <li>📱 Works offline on any device</li>
+                            </ul>
+                            <button class="unlock-map-btn" id="unlockMapBtnSection">
+                                <span class="price-tag">$5</span>
+                                <span>Unlock Full Map</span>
+                            </button>
+                            <span class="unlock-guarantee">✓ One-time purchase • Instant access • Lifetime updates</span>
+                        </div>
+                    </div>
+                    <div class="map-unlocked-state" id="mapUnlockedState" style="display: none;">
+                        <iframe 
+                            src="" 
+                            id="mapIframeSection"
+                            width="100%" 
+                            height="500" 
+                            style="border:0; border-radius: 12px;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                        <div class="map-actions">
+                            <button class="map-action-btn"><span>📥</span> Download Offline</button>
+                            <button class="map-action-btn"><span>🔗</span> Share Map</button>
+                            <button class="map-action-btn"><span>📍</span> Add Custom Pin</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Placeholder - After Map -->
+            <div class="section-placeholder" data-position="after-map">
+                <div class="add-section-inline">
+                    <button class="add-section-trigger" onclick="toggleSectionMenu(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Section
+                    </button>
+                    <div class="section-type-menu">
+                        <button class="section-type-option" onclick="addSectionDirect('after-map', 'text')">📝 Text Block</button>
+                        <button class="section-type-option" onclick="addSectionDirect('after-map', 'gallery')">🖼️ Photo Gallery</button>
+                        <button class="section-type-option" onclick="addSectionDirect('after-map', 'tips')">💡 Travel Tips</button>
+                        <button class="section-type-option" onclick="addSectionDirect('after-map', 'highlights')">⭐ Highlights</button>
+                        <button class="section-type-option" onclick="addSectionDirect('after-map', 'quote')">💬 Quote</button>
+                        <button class="section-type-option" onclick="addSectionDirect('after-map', 'video')">🎬 Video</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 Itinerant Pixels • Made with ♥ for travelers everywhere</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="codata-api.js"></script>
+    <script src="destination.js"></script>
+</body>
+</html>

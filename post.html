@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Blog Post - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Post Page Specific Styles */
+        .post-header {
+            padding-top: 100px;
+            text-align: center;
+        }
+        
+        .post-cover {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .post-category-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--color-cream);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .post-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            max-width: 900px;
+            margin: 0 auto 1rem;
+        }
+        
+        .post-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-light);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 3rem;
+        }
+        
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .post-content {
+            max-width: 750px;
+            margin: 0 auto;
+            font-size: 1.125rem;
+            line-height: 1.9;
+        }
+        
+        .post-content h2 {
+            font-size: 2rem;
+            margin: 3rem 0 1.5rem;
+        }
+        
+        .post-content h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+        }
+        
+        .post-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .post-content img {
+            width: 100%;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .post-content blockquote {
+            margin: 2rem 0;
+            padding: 1.5rem 2rem;
+            border-left: 4px solid var(--color-secondary);
+            background: var(--color-cream);
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--color-text-light);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .post-content ul,
+        .post-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .post-content li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .post-content a {
+            color: var(--color-secondary);
+            text-decoration: underline;
+        }
+        
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .post-tag {
+            padding: 0.5rem 1rem;
+            background: var(--color-cream);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--color-text);
+        }
+        
+        .post-tag:hover {
+            background: var(--color-secondary);
+            color: white;
+        }
+        
+        .post-share {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--color-cream);
+            border-radius: 12px;
+        }
+        
+        .post-share span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+        }
+        
+        .share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 50%;
+            color: var(--color-text);
+            transition: var(--transition-fast);
+        }
+        
+        .share-btn:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        /* Related Posts */
+        .related-posts {
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .related-posts h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .related-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-normal);
+        }
+        
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .related-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .related-card-content {
+            padding: 1.25rem;
+        }
+        
+        .related-card h4 {
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .related-card span {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        /* 404 State */
+        .post-not-found {
+            text-align: center;
+            padding: 100px 20px;
+        }
+        
+        .post-not-found h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .post-not-found p {
+            color: var(--color-text-light);
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .post-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#destinations" class="nav-link">Destinations</a></li>
+                <li class="nav-item"><a href="index.html#travel-guides" class="nav-link">Travel Guides</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container" id="postContainer">
+        <!-- Post content will be loaded here -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 Itinerant Pixels • Made with ♥ for travelers everywhere</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="codata-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            
+            if (!postId) {
+                showNotFound();
+                return;
+            }
+            
+            // Try Codata first
+            let post = null;
+            let posts = [];
+            
+            if (typeof CodataAPI !== 'undefined') {
+                try {
+                    post = await CodataAPI.getPost(postId);
+                    posts = await CodataAPI.getPosts({ status: 'published' }) || [];
+                } catch (error) {
+                    console.warn('Codata unavailable, using localStorage fallback');
+                }
+            }
+            
+            // Fallback to localStorage
+            if (!post) {
+                posts = JSON.parse(localStorage.getItem('published_posts') || '[]');
+                post = posts.find(p => p.id === postId);
+            }
+            
+            if (!post) {
+                showNotFound();
+                return;
+            }
+            
+            renderPost(post, posts);
+        });
+        
+        function renderPost(post, allPosts) {
+            document.getElementById('pageTitle').textContent = `${post.title} - Itinerant Pixels`;
+            
+            const categoryLabels = {
+                'europe': '🌍 Europe',
+                'asia': '🌏 Asia',
+                'americas': '🌎 Americas',
+                'africa': '🌍 Africa',
+                'oceania': '🌏 Oceania',
+                'tips': '💡 Travel Tips',
+                'gear': '🎒 Gear & Packing',
+                'food': '🍜 Food & Culture'
+            };
+            
+            const readingTime = calculateReadingTime(post.content);
+            const relatedPosts = allPosts.filter(p => p.id !== post.id).slice(0, 3);
+            
+            document.getElementById('postContainer').innerHTML = `
+                <article class="post-header">
+                    ${post.coverImage ? `<img class="post-cover" src="${post.coverImage}" alt="${post.title}">` : ''}
+                    ${post.category ? `<span class="post-category-badge">${categoryLabels[post.category] || post.category}</span>` : ''}
+                    <h1 class="post-title">${post.title}</h1>
+                    ${post.subtitle ? `<p class="post-subtitle">${post.subtitle}</p>` : ''}
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <img class="author-avatar" src="https://images.unsplash.com/photo-1522199710521-72d69614c702?w=100&q=80" alt="${post.author}">
+                            <span>${post.author || 'Sarah & Alex'}</span>
+                        </div>
+                        <span>${formatDate(post.date)}</span>
+                        <span>${readingTime} min read</span>
+                    </div>
+                </article>
+                
+                <div class="post-content">
+                    ${post.content}
+                    
+                    ${post.tags && post.tags.length > 0 ? `
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<a href="#" class="post-tag">#${tag}</a>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="post-share">
+                        <span>Share this post:</span>
+                        <a href="#" class="share-btn" aria-label="Share on Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                        </a>
+                        <a href="#" class="share-btn" aria-label="Share on Twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                        </a>
+                        <a href="#" class="share-btn" aria-label="Share on Pinterest">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4"></path><path d="M12 12l-3 8"></path></svg>
+                        </a>
+                        <a href="#" class="share-btn" aria-label="Copy link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                ${relatedPosts.length > 0 ? `
+                    <section class="related-posts">
+                        <h3>More Stories</h3>
+                        <div class="related-grid">
+                            ${relatedPosts.map(p => `
+                                <a href="post.html?id=${p.id}" class="related-card">
+                                    ${p.coverImage ? `<img src="${p.coverImage}" alt="${p.title}">` : `<div style="height:180px;background:var(--color-cream)"></div>`}
+                                    <div class="related-card-content">
+                                        <h4>${p.title || 'Untitled'}</h4>
+                                        <span>${formatDate(p.date)}</span>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </section>
+                ` : ''}
+            `;
+        }
+        
+        function showNotFound() {
+            document.getElementById('postContainer').innerHTML = `
+                <div class="post-not-found">
+                    <h1>Post Not Found</h1>
+                    <p>Sorry, the post you're looking for doesn't exist or has been removed.</p>
+                    <a href="index.html" class="btn-primary" style="display:inline-block;padding:1rem 2rem;background:#2c3e50;color:white;border-radius:50px;text-decoration:none;">Back to Homepage</a>
+                </div>
+            `;
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+        }
+        
+        function calculateReadingTime(content) {
+            if (!content) return 1;
+            const text = content.replace(/<[^>]*>/g, '');
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+            return Math.max(1, Math.ceil(words / 200));
+        }
+    </script>
+</body>
+</html>

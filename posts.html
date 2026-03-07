@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Posts - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .posts-page {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            color: var(--color-text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .posts-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-pill {
+            padding: 0.6rem 1.5rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+        
+        .all-posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-normal);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .blog-card-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .blog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-slow);
+        }
+        
+        .blog-card:hover .blog-card-image img {
+            transform: scale(1.05);
+        }
+        
+        .blog-card-image .category-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 1rem;
+            background: white;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-card-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .blog-card-content p {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .blog-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--color-cream);
+            border-radius: 12px;
+        }
+        
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            color: var(--color-text-muted);
+            margin-bottom: 1.5rem;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 0.75rem;
+        }
+        
+        .empty-state p {
+            color: var(--color-text-light);
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-secondary);
+        }
+        
+        @media (max-width: 992px) {
+            .all-posts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .all-posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#destinations" class="nav-link">Destinations</a></li>
+                <li class="nav-item"><a href="posts.html" class="nav-link">Travel Guides</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="posts-page">
+        <div class="container">
+            <div class="page-header">
+                <h1>Travel Guides</h1>
+                <p>Explore our collection of detailed travel guides, tips, and stories from around the world.</p>
+            </div>
+            
+            <div class="posts-filters" id="filters">
+                <button class="filter-pill active" data-filter="all">All Posts</button>
+                <button class="filter-pill" data-filter="europe">🌍 Europe</button>
+                <button class="filter-pill" data-filter="asia">🌏 Asia</button>
+                <button class="filter-pill" data-filter="americas">🌎 Americas</button>
+                <button class="filter-pill" data-filter="tips">💡 Tips</button>
+            </div>
+            
+            <div class="all-posts-grid" id="postsGrid">
+                <!-- Posts loaded dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 Itinerant Pixels • Made with ♥ for travelers everywhere</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Edit Button -->
+    <a href="editor.html" class="floating-edit-btn" title="Write New Post">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+    </a>
+
+    <script>
+        const categoryLabels = {
+            'europe': '🌍 Europe',
+            'asia': '🌏 Asia',
+            'americas': '🌎 Americas',
+            'africa': '🌍 Africa',
+            'oceania': '🌏 Oceania',
+            'tips': '💡 Tips',
+            'gear': '🎒 Gear',
+            'food': '🍜 Food'
+        };
+        
+        let allPosts = [];
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            initFilters();
+        });
+        
+        async function loadPosts() {
+            // Try to load from Codata first
+            if (typeof CodataAPI !== 'undefined') {
+                try {
+                    const codataPosts = await CodataAPI.getPosts({ status: 'published' });
+                    if (codataPosts && Array.isArray(codataPosts) && codataPosts.length > 0) {
+                        allPosts = codataPosts;
+                        renderPosts(allPosts);
+                        return;
+                    }
+                } catch (error) {
+                    console.warn('Codata unavailable, using localStorage fallback');
+                }
+            }
+            
+            // Fallback to localStorage
+            allPosts = JSON.parse(localStorage.getItem('published_posts') || '[]');
+            renderPosts(allPosts);
+        }
+        
+        function renderPosts(posts) {
+            const grid = document.getElementById('postsGrid');
+            
+            if (posts.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <h3>No Posts Yet</h3>
+                        <p>Be the first to share your travel adventures!</p>
+                        <a href="editor.html" class="btn-primary">Write Your First Post</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = posts.map(post => `
+                <a href="post.html?id=${post.id}" class="blog-card">
+                    <div class="blog-card-image">
+                        ${post.coverImage 
+                            ? `<img src="${post.coverImage}" alt="${post.title}">`
+                            : `<div style="width:100%;height:100%;background:linear-gradient(135deg,var(--color-cream),var(--color-light-gray))"></div>`
+                        }
+                        ${post.category ? `<span class="category-badge">${categoryLabels[post.category] || post.category}</span>` : ''}
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>${post.title || 'Untitled Post'}</h3>
+                        ${post.subtitle ? `<p>${post.subtitle}</p>` : ''}
+                        <div class="blog-card-meta">
+                            <span>${post.author || 'Sarah & Alex'}</span>
+                            <span>${formatDate(post.date)}</span>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+        
+        function initFilters() {
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    if (filter === 'all') {
+                        renderPosts(allPosts);
+                    } else {
+                        const filtered = allPosts.filter(p => p.category === filter);
+                        renderPosts(filtered);
+                    }
+                });
+            });
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+        }
+    </script>
+    <script src="codata-api.js"></script>
+</body>
+</html>

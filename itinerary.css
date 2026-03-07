@@ -1,0 +1,634 @@
+/* ========================================
+   Itinerary View Page Styles
+   ======================================== */
+
+/* Hero Section */
+.itinerary-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.itinerary-hero .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+}
+
+.itinerary-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 3rem 2rem;
+    max-width: 900px;
+}
+
+.itinerary-duration {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-white);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.itinerary-hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--color-white);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.itinerary-meta {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+/* Main Content */
+.itinerary-main {
+    background: var(--color-cream);
+    padding: 4rem 0;
+}
+
+.itinerary-main .container {
+    max-width: 900px;
+}
+
+/* Description Section */
+.itinerary-description-section {
+    margin-bottom: 3rem;
+}
+
+.itinerary-description-section p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    text-align: center;
+}
+
+/* Highlights Section */
+.itinerary-highlights-section {
+    margin-bottom: 4rem;
+    padding: 2rem;
+    background: var(--color-white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.itinerary-highlights-section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.highlights-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.highlight-tag {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, #d4b896 100%);
+    color: var(--color-white);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Day by Day Section */
+.day-by-day-section {
+    margin-bottom: 4rem;
+}
+
+.day-by-day-section h2 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 3rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--color-secondary), var(--color-accent));
+    border-radius: 3px;
+}
+
+.day-card {
+    position: relative;
+    background: var(--color-white);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.day-card:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.day-card::before {
+    content: '';
+    position: absolute;
+    left: -3rem;
+    top: 2rem;
+    width: 16px;
+    height: 16px;
+    background: var(--color-secondary);
+    border-radius: 50%;
+    border: 3px solid var(--color-cream);
+    transform: translateX(-50%);
+}
+
+.day-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-cream);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+}
+
+.day-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+}
+
+.day-card p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+}
+
+/* Practical Info Section */
+.practical-info-section {
+    margin-bottom: 3rem;
+}
+
+.practical-info-section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.info-card h4 {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-card p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Book Your Trip Section */
+.book-trip-section {
+    margin-bottom: 3rem;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.book-trip-section h2 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+}
+
+.book-trip-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+}
+
+.affiliate-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.affiliate-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--color-white);
+    transition: all 0.3s ease;
+}
+
+.affiliate-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.affiliate-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.affiliate-info {
+    text-align: left;
+    flex: 1;
+}
+
+.affiliate-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.affiliate-info p {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.affiliate-card svg {
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.affiliate-card:hover svg {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+.hotel-card:hover {
+    background: rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+.car-card:hover {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.tours-card:hover {
+    background: rgba(245, 158, 11, 0.3);
+    border-color: rgba(245, 158, 11, 0.5);
+}
+
+/* Back Section */
+.back-section {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--color-text);
+    color: var(--color-white);
+    border-radius: 50px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--color-secondary);
+    transform: translateX(-5px);
+}
+
+/* Footer */
+.footer {
+    background: var(--color-text);
+    color: var(--color-white);
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.footer p {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .itinerary-hero {
+        height: 50vh;
+    }
+    
+    .itinerary-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .timeline {
+        padding-left: 2rem;
+    }
+    
+    .day-card::before {
+        left: -2rem;
+        width: 12px;
+        height: 12px;
+    }
+    
+    .day-card {
+        padding: 1.5rem;
+    }
+    
+    .affiliate-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .book-trip-section {
+        padding: 1.5rem;
+    }
+}
+
+/* Floating Edit Button */
+.floating-edit-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary, #2c3e50), var(--color-secondary, #8b7355));
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.floating-edit-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.floating-edit-btn.active {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+body.edit-mode .floating-edit-btn {
+    display: none;
+}
+
+/* Edit Mode Toolbar */
+.edit-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 1rem 2rem;
+    display: none;
+    z-index: 1001;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.edit-toolbar.active {
+    display: block;
+}
+
+.edit-toolbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.edit-mode-label {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.edit-toolbar-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.edit-toolbar-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.edit-toolbar-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.edit-toolbar-btn.save {
+    background: #27ae60;
+}
+
+.edit-toolbar-btn.save:hover {
+    background: #219a52;
+}
+
+.edit-toolbar-btn.cancel {
+    background: #e74c3c;
+}
+
+.edit-toolbar-btn.cancel:hover {
+    background: #c0392b;
+}
+
+/* Editable Elements */
+.editable.editing {
+    outline: 2px dashed rgba(255, 255, 255, 0.5);
+    outline-offset: 4px;
+    min-height: 1.5em;
+    cursor: text;
+}
+
+body.edit-mode .itinerary-description-section .editable.editing {
+    outline-color: var(--color-secondary, #8b7355);
+}
+
+body.edit-mode .day-title.editing,
+body.edit-mode .day-description.editing {
+    outline-color: var(--color-secondary, #8b7355);
+}
+
+/* Day Card Actions */
+.day-card {
+    position: relative;
+}
+
+.day-card-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    gap: 0.5rem;
+}
+
+.day-delete-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #e74c3c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.day-delete-btn:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
+/* Highlights Editor */
+.highlights-editor {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--color-cream, #faf8f5);
+    border-radius: 8px;
+}
+
+.highlights-editor textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.inline-action-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    background: var(--color-secondary, #8b7355);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s ease;
+}
+
+.inline-action-btn:hover {
+    background: #7a6548;
+}
+
+/* Save Indicator */
+.save-indicator {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #27ae60;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1002;
+    animation: slideUp 0.3s ease;
+}
+
+.save-indicator.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Edit mode body padding for toolbar */
+body.edit-mode {
+    padding-top: 60px;
+}
+
+body.edit-mode .navbar {
+    top: 60px;
+}
+
+/* No days message */
+.no-days-message {
+    text-align: center;
+    color: var(--color-text-muted, #999);
+    padding: 2rem;
+    font-style: italic;
+}

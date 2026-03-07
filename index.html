@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerant Pixels - Travel Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <div class="nav-links-group">
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu">
+                    <li class="nav-item dropdown">
+                        <a href="#destinations" class="nav-link">Destinations</a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-column">
+                                <h4>Europe</h4>
+                                <a href="destination.html?d=italy">🇮🇹 Italy</a>
+                                <a href="destination.html?d=greece">🇬🇷 Greece</a>
+                                <a href="destination.html?d=portugal">🇵🇹 Portugal</a>
+                                <a href="destination.html?d=spain">🇪🇸 Spain</a>
+                                <a href="destination.html?d=france">🇫🇷 France</a>
+                            </div>
+                            <div class="dropdown-column">
+                                <h4>Asia</h4>
+                                <a href="destination.html?d=bali">🇮🇩 Bali</a>
+                                <a href="destination.html?d=japan">🇯🇵 Japan</a>
+                                <a href="destination.html?d=thailand">🇹🇭 Thailand</a>
+                                <a href="destination.html?d=vietnam">🇻🇳 Vietnam</a>
+                                <a href="destination.html?d=srilanka">🇱🇰 Sri Lanka</a>
+                            </div>
+                            <div class="dropdown-column">
+                                <h4>Americas</h4>
+                                <a href="destination.html?d=mexico">🇲🇽 Mexico</a>
+                                <a href="destination.html?d=costarica">🇨🇷 Costa Rica</a>
+                                <a href="destination.html?d=peru">🇵🇪 Peru</a>
+                                <a href="destination.html?d=colombia">🇨🇴 Colombia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="adventures.html" class="nav-link">Adventures</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+                </ul>
+            </div>
+            <div class="nav-right-group">
+                <div class="nav-search-inline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" class="nav-search-input" id="navSearchInput" placeholder="Search journeys, destinations...">
+                </div>
+                <div class="nav-social">
+                    <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                    <a href="#" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg></a>
+                    <a href="#" aria-label="Pinterest"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4"></path><path d="M12 12l-3 8"></path></svg></a>
+                </div>
+            </div>
+        </div>
+        <!-- Search Overlay -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-container">
+                <form class="search-form" id="searchForm">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search destinations, guides..." autocomplete="off">
+                    <button type="submit" class="search-submit" aria-label="Search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </form>
+                <button class="search-close" id="searchClose" aria-label="Close search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+                <div class="search-suggestions">
+                    <span class="search-label">Popular searches:</span>
+                    <div class="search-tags">
+                        <a href="destination.html?d=italy" class="search-tag">Italy</a>
+                        <a href="destination.html?d=japan" class="search-tag">Japan</a>
+                        <a href="destination.html?d=bali" class="search-tag">Bali</a>
+                        <a href="destination.html?d=greece" class="search-tag">Greece</a>
+                        <a href="destination.html?d=thailand" class="search-tag">Thailand</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-image">
+            <img src="images/landing-page-cover.jpg" alt="Discover the World">
+        </div>
+        <div class="hero-content">
+            <h1>Discover the World</h1>
+            <a href="#destinations" class="hero-cta">Start Your Journey</a>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </header>
+
+    <!-- Film Strip Photo Carousel -->
+    <section class="film-strip">
+        <div class="film-track-wrapper">
+            <div class="film-track" id="filmTrack">
+                <!-- Film frame 1 - Rome, Italy -->
+                <a href="destination.html?d=italy" class="film-frame" title="Rome, Italy - Classic 2-Week Itinerary">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=600&q=80" alt="Colosseum in Rome">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 2 - Santorini, Greece -->
+                <a href="destination.html?d=greece" class="film-frame" title="Santorini, Greece - Island Hopping">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=600&q=80" alt="Santorini sunset">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 3 - Bali, Indonesia -->
+                <a href="destination.html?d=bali" class="film-frame" title="Ubud, Bali - Ultimate Bali Itinerary">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali rice terraces">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 4 - Amalfi Coast -->
+                <a href="destination.html?d=italy" class="film-frame" title="Positano, Italy - Amalfi Coast">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?w=600&q=80" alt="Positano Amalfi Coast">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 5 - Kyoto, Japan -->
+                <a href="destination.html?d=japan" class="film-frame" title="Kyoto, Japan - 2 Weeks in Japan">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80" alt="Kyoto temple">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 6 - Tulum, Mexico -->
+                <a href="destination.html?d=mexico" class="film-frame" title="Tulum, Mexico - Yucatan Road Trip">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1518638150340-f706e86654de?w=600&q=80" alt="Tulum ruins">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 7 - Iceland -->
+                <a href="destination.html?d=iceland" class="film-frame" title="Iceland - Ring Road Adventure">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1520769669658-f07657f5a307?w=600&q=80" alt="Iceland northern lights">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 8 - Cinque Terre -->
+                <a href="destination.html?d=italy" class="film-frame" title="Cinque Terre, Italy - Northern Italy">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80" alt="Cinque Terre colorful houses">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 9 - Thailand -->
+                <a href="destination.html?d=thailand" class="film-frame" title="Phi Phi Islands, Thailand">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=600&q=80" alt="Thailand longtail boat">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 10 - Tuscany -->
+                <a href="destination.html?d=italy" class="film-frame" title="Val d'Orcia, Tuscany">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=80" alt="Tuscany countryside">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 11 - Maldives -->
+                <a href="destination.html?d=maldives" class="film-frame" title="Maldives - Paradise Islands">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80" alt="Maldives beach">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+                <!-- Film frame 12 - Portugal -->
+                <a href="destination.html?d=portugal" class="film-frame" title="Lisbon, Portugal - Algarve Coast">
+                    <div class="film-sprocket top"></div>
+                    <div class="film-photo">
+                        <img src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=600&q=80" alt="Lisbon tram">
+                    </div>
+                    <div class="film-sprocket bottom"></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Where to Go Next - Month Based Recommendations -->
+    <section class="where-to-go" id="destinations">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Best Time to Travel</span>
+                <h2>Where to Go in <span id="selectedMonthName">February</span>?</h2>
+            </div>
+            <div class="month-selector">
+                <span class="month-label">I want to travel in:</span>
+                <div class="month-buttons" id="monthButtons">
+                    <button class="month-btn" data-month="0">Jan</button>
+                    <button class="month-btn" data-month="1">Feb</button>
+                    <button class="month-btn" data-month="2">Mar</button>
+                    <button class="month-btn" data-month="3">Apr</button>
+                    <button class="month-btn" data-month="4">May</button>
+                    <button class="month-btn" data-month="5">Jun</button>
+                    <button class="month-btn" data-month="6">Jul</button>
+                    <button class="month-btn" data-month="7">Aug</button>
+                    <button class="month-btn" data-month="8">Sep</button>
+                    <button class="month-btn" data-month="9">Oct</button>
+                    <button class="month-btn" data-month="10">Nov</button>
+                    <button class="month-btn" data-month="11">Dec</button>
+                </div>
+            </div>
+            <div class="destinations-grid" id="monthDestinations">
+                <!-- Destinations will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702?w=800&q=80" alt="Couple traveling">
+                </div>
+                <div class="about-content">
+                    <span class="section-subtitle">About Us</span>
+                    <h2>Hey, We're Sarah & Alex</h2>
+                    <p>We're two adventure seekers who traded our 9-5 jobs for a life of endless exploration. Since 2019, we've been traveling the world, documenting our journeys, and creating detailed travel guides to help you plan your perfect trip.</p>
+                    <p>From hidden waterfalls in Bali to ancient temples in Japan, we're on a mission to uncover the world's most beautiful places and share them with you.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Countries</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">200+</span>
+                            <span class="stat-label">Travel Guides</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">500K+</span>
+                            <span class="stat-label">Readers</span>
+                        </div>
+                    </div>
+                    <a href="https://instagram.com/itinerantpixels" target="_blank" class="instagram-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        Follow our travels on Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <span class="section-subtitle">Stay Inspired</span>
+                <h2>The Travel Letter</h2>
+                <p>Get travel tips, destination guides, and behind-the-scenes stories delivered straight to your inbox.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <span class="newsletter-note">Join 50,000+ travelers • No spam, ever</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Preview -->
+    <section id="gallery" class="shop-preview">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Our Photography</span>
+                <h2>Gallery</h2>
+            </div>
+            <div class="shop-grid">
+                <a href="gallery.html" class="shop-item">
+                    <div class="shop-image">
+                        <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=400&q=80" alt="Beach & Coast">
+                    </div>
+                    <h4>Beaches & Coasts</h4>
+                    <p>Crystal waters & golden sands</p>
+                </a>
+                <a href="gallery.html" class="shop-item">
+                    <div class="shop-image">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&q=80" alt="Temples & Culture">
+                    </div>
+                    <h4>Temples & Culture</h4>
+                    <p>Ancient wonders of the world</p>
+                </a>
+                <a href="gallery.html" class="shop-item">
+                    <div class="shop-image">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Mountains & Nature">
+                    </div>
+                    <h4>Mountains & Nature</h4>
+                    <p>Epic landscapes & trails</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 Itinerant Pixels • Made with ♥ for travelers everywhere</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="codata-api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

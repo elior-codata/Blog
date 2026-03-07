@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Editor - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+    <!-- Editor Navigation -->
+    <nav class="editor-nav">
+        <div class="editor-nav-left">
+            <a href="index.html" class="back-link">← Back to Site</a>
+            <span class="editor-title">Blog Editor</span>
+        </div>
+        <div class="editor-nav-right">
+            <span class="save-status" id="saveStatus">All changes saved</span>
+            <button class="btn-secondary" id="previewBtn">Preview</button>
+            <button class="btn-primary" id="publishBtn">Publish</button>
+        </div>
+    </nav>
+
+    <div class="editor-layout">
+        <!-- Sidebar - Post List -->
+        <aside class="editor-sidebar">
+            <div class="sidebar-header">
+                <h3>My Posts</h3>
+                <button class="btn-new-post" id="newPostBtn">+ New Post</button>
+            </div>
+            <div class="post-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="published">Published</button>
+                <button class="filter-btn" data-filter="draft">Drafts</button>
+            </div>
+            <div class="posts-list" id="postsList">
+                <!-- Posts will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Main Editor Area -->
+        <main class="editor-main">
+            <div class="editor-container" id="editorContainer">
+                <!-- Cover Image -->
+                <div class="cover-image-wrapper" id="coverImageWrapper">
+                    <div class="cover-image-placeholder" id="coverPlaceholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        <span>Add Cover Image</span>
+                        <input type="file" id="coverImageInput" accept="image/*" hidden>
+                    </div>
+                    <div class="cover-image-preview" id="coverPreview" style="display: none;">
+                        <img src="" alt="Cover" id="coverImage">
+                        <div class="cover-actions">
+                            <button class="cover-btn" id="changeCoverBtn">Change</button>
+                            <button class="cover-btn" id="removeCoverBtn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post Meta -->
+                <div class="post-meta-row">
+                    <div class="category-selector">
+                        <select id="postCategory">
+                            <option value="">Select Category</option>
+                            <option value="europe">🌍 Europe</option>
+                            <option value="asia">🌏 Asia</option>
+                            <option value="americas">🌎 Americas</option>
+                            <option value="africa">🌍 Africa</option>
+                            <option value="oceania">🌏 Oceania</option>
+                            <option value="tips">💡 Travel Tips</option>
+                            <option value="gear">🎒 Gear & Packing</option>
+                            <option value="food">🍜 Food & Culture</option>
+                        </select>
+                    </div>
+                    <div class="destination-input">
+                        <input type="text" id="postDestination" placeholder="Destination (e.g., Bali, Japan, Italy)">
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <div class="title-wrapper">
+                    <textarea id="postTitle" placeholder="Your amazing title here..." rows="1"></textarea>
+                </div>
+
+                <!-- Subtitle/Excerpt -->
+                <div class="subtitle-wrapper">
+                    <textarea id="postSubtitle" placeholder="Write a short description or excerpt..." rows="2"></textarea>
+                </div>
+
+                <!-- Rich Text Editor Toolbar -->
+                <div class="editor-toolbar">
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" data-command="bold" title="Bold (Ctrl+B)">
+                            <strong>B</strong>
+                        </button>
+                        <button class="toolbar-btn" data-command="italic" title="Italic (Ctrl+I)">
+                            <em>I</em>
+                        </button>
+                        <button class="toolbar-btn" data-command="underline" title="Underline (Ctrl+U)">
+                            <u>U</u>
+                        </button>
+                        <button class="toolbar-btn" data-command="strikeThrough" title="Strikethrough">
+                            <s>S</s>
+                        </button>
+                    </div>
+                    <div class="toolbar-divider"></div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" data-command="h2" title="Heading 2">H2</button>
+                        <button class="toolbar-btn" data-command="h3" title="Heading 3">H3</button>
+                        <button class="toolbar-btn" data-command="paragraph" title="Paragraph">P</button>
+                    </div>
+                    <div class="toolbar-divider"></div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        </button>
+                        <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"></line><line x1="10" y1="12" x2="21" y2="12"></line><line x1="10" y1="18" x2="21" y2="18"></line><path d="M4 6h1v4"></path><path d="M4 10h2"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg>
+                        </button>
+                    </div>
+                    <div class="toolbar-divider"></div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" data-command="blockquote" title="Quote">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"></path></svg>
+                        </button>
+                        <button class="toolbar-btn" data-command="createLink" title="Insert Link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        </button>
+                        <button class="toolbar-btn" id="insertImageBtn" title="Insert Image">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        </button>
+                        <input type="file" id="contentImageInput" accept="image/*" hidden>
+                    </div>
+                    <div class="toolbar-divider"></div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" data-command="removeFormat" title="Clear Formatting">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content Editor -->
+                <div class="content-editor" id="contentEditor" contenteditable="true" data-placeholder="Start writing your story..."></div>
+
+                <!-- Tags -->
+                <div class="tags-section">
+                    <label>Tags</label>
+                    <div class="tags-input-wrapper">
+                        <div class="tags-container" id="tagsContainer"></div>
+                        <input type="text" id="tagInput" placeholder="Add a tag and press Enter">
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel - Settings -->
+        <aside class="editor-settings">
+            <div class="settings-section">
+                <h4>Post Settings</h4>
+                
+                <div class="setting-item">
+                    <label>URL Slug</label>
+                    <input type="text" id="postSlug" placeholder="your-post-url">
+                </div>
+
+                <div class="setting-item">
+                    <label>Publish Date</label>
+                    <input type="date" id="postDate">
+                </div>
+
+                <div class="setting-item">
+                    <label>Author</label>
+                    <input type="text" id="postAuthor" value="Sarah & Alex">
+                </div>
+
+                <div class="setting-item">
+                    <label>Reading Time</label>
+                    <span class="reading-time" id="readingTime">0 min read</span>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>SEO Settings</h4>
+                
+                <div class="setting-item">
+                    <label>Meta Title</label>
+                    <input type="text" id="metaTitle" placeholder="SEO title (optional)">
+                </div>
+
+                <div class="setting-item">
+                    <label>Meta Description</label>
+                    <textarea id="metaDescription" placeholder="SEO description (optional)" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="settings-section danger-zone">
+                <h4>Danger Zone</h4>
+                <button class="btn-danger" id="deletePostBtn">Delete Post</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content preview-content">
+            <button class="modal-close" id="closePreviewBtn">×</button>
+            <div class="preview-frame" id="previewFrame"></div>
+        </div>
+    </div>
+
+    <!-- Publish Success Modal -->
+    <div class="modal" id="publishModal">
+        <div class="modal-content publish-success">
+            <div class="success-icon">✓</div>
+            <h2>Post Published!</h2>
+            <p>Your blog post is now live on the site.</p>
+            <div class="modal-actions">
+                <a href="index.html" class="btn-secondary">Go to Homepage</a>
+                <button class="btn-primary" id="viewPostBtn">View Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image URL Modal -->
+    <div class="modal" id="imageUrlModal">
+        <div class="modal-content image-url-content">
+            <h3>Insert Image</h3>
+            <div class="image-tabs">
+                <button class="image-tab active" data-tab="url">From URL</button>
+                <button class="image-tab" data-tab="upload">Upload</button>
+            </div>
+            <div class="image-tab-content" id="urlTab">
+                <input type="text" id="imageUrlInput" placeholder="Paste image URL here...">
+                <input type="text" id="imageAltInput" placeholder="Alt text (for accessibility)">
+            </div>
+            <div class="image-tab-content" id="uploadTab" style="display: none;">
+                <div class="upload-zone" id="uploadZone">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <span>Click to upload or drag & drop</span>
+                    <input type="file" id="modalImageUpload" accept="image/*" hidden>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelImageBtn">Cancel</button>
+                <button class="btn-primary" id="insertImageConfirmBtn">Insert Image</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="codata-api.js"></script>
+    <script src="editor.js"></script>
+</body>
+</html>
