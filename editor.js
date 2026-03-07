@@ -57,17 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // ========================================
 
 async function loadPosts() {
-    // Try to load from Codata first
+    // Load from local data service
     if (typeof CodataAPI !== 'undefined') {
         try {
-            const codataPosts = await CodataAPI.getPosts();
-            if (codataPosts && Array.isArray(codataPosts) && codataPosts.length > 0) {
-                posts = codataPosts;
+            const fetchedPosts = await CodataAPI.getPosts();
+            if (fetchedPosts && Array.isArray(fetchedPosts) && fetchedPosts.length > 0) {
+                posts = fetchedPosts;
                 renderPostsList();
                 return;
             }
         } catch (error) {
-            console.warn('Codata unavailable, using localStorage fallback');
+            console.warn('Data service unavailable, using localStorage fallback');
         }
     }
     
@@ -81,7 +81,7 @@ async function savePosts() {
     // Save to localStorage as backup
     localStorage.setItem('blog_posts', JSON.stringify(posts));
     
-    // Also save to Codata if available
+    // Also save to local data if available
     if (typeof CodataAPI !== 'undefined' && currentPost) {
         try {
             if (currentPost._isNew) {
@@ -91,7 +91,7 @@ async function savePosts() {
                 await CodataAPI.updatePost(currentPost.id, currentPost);
             }
         } catch (error) {
-            console.error('Failed to save to Codata:', error);
+            console.error('Failed to save to local data:', error);
         }
     }
 }
@@ -188,12 +188,12 @@ function saveCurrentPost() {
 async function deletePost(postId) {
     if (!confirm('Are you sure you want to delete this post?')) return;
     
-    // Delete from Codata if available
+    // Delete from local data if available
     if (typeof CodataAPI !== 'undefined') {
         try {
             await CodataAPI.deletePost(postId);
         } catch (error) {
-            console.error('Failed to delete from Codata:', error);
+            console.error('Failed to delete from local data:', error);
         }
     }
     
@@ -228,12 +228,12 @@ async function publishPost() {
     currentPost.slug = currentPost.slug || generateSlug(currentPost.title);
     saveCurrentPost();
     
-    // Save to Codata if available
+    // Save to local data if available
     if (typeof CodataAPI !== 'undefined') {
         try {
             await CodataAPI.updatePost(currentPost.id, currentPost);
         } catch (error) {
-            console.error('Failed to publish to Codata:', error);
+            console.error('Failed to publish to local data:', error);
         }
     }
     
@@ -245,12 +245,12 @@ async function publishPost() {
 }
 
 async function savePublishedPost(post) {
-    // Save to Codata if available
+    // Save to local data if available
     if (typeof CodataAPI !== 'undefined') {
         try {
             await CodataAPI.updatePost(post.id, post);
         } catch (error) {
-            console.error('Failed to save published post to Codata:', error);
+            console.error('Failed to save published post to local data:', error);
         }
     }
     

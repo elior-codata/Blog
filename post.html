@@ -295,7 +295,7 @@
         </div>
     </footer>
 
-    <script src="codata-api.js"></script>
+    <script src="local-data.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -306,7 +306,7 @@
                 return;
             }
             
-            // Try Codata first
+            // Try local data first
             let post = null;
             let posts = [];
             
@@ -315,7 +315,7 @@
                     post = await CodataAPI.getPost(postId);
                     posts = await CodataAPI.getPosts({ status: 'published' }) || [];
                 } catch (error) {
-                    console.warn('Codata unavailable, using localStorage fallback');
+                    console.warn('local data unavailable, using localStorage fallback');
                 }
             }
             

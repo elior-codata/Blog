@@ -264,17 +264,17 @@
         });
         
         async function loadPosts() {
-            // Try to load from Codata first
+            // Load from local data service
             if (typeof CodataAPI !== 'undefined') {
                 try {
-                    const codataPosts = await CodataAPI.getPosts({ status: 'published' });
-                    if (codataPosts && Array.isArray(codataPosts) && codataPosts.length > 0) {
-                        allPosts = codataPosts;
+                    const fetchedPosts = await CodataAPI.getPosts({ status: 'published' });
+                    if (fetchedPosts && Array.isArray(fetchedPosts) && fetchedPosts.length > 0) {
+                        allPosts = fetchedPosts;
                         renderPosts(allPosts);
                         return;
                     }
                 } catch (error) {
-                    console.warn('Codata unavailable, using localStorage fallback');
+                    console.warn('Data service unavailable, using localStorage fallback');
                 }
             }
             
@@ -352,6 +352,6 @@
             });
         }
     </script>
-    <script src="codata-api.js"></script>
+    <script src="local-data.js"></script>
 </body>
 </html>

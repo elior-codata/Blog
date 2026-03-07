@@ -325,7 +325,7 @@ function initNewsletterForm() {
             submitBtn.disabled = true;
             
             try {
-                // Subscribe via Codata backend
+                // Subscribe via local data backend
                 if (typeof CodataAPI !== 'undefined') {
                     await CodataAPI.subscribeNewsletter(email, {
                         source: 'homepage',

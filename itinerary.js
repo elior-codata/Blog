@@ -24,12 +24,12 @@ async function loadItinerary() {
     
     let itinerary = null;
     
-    // Try to load from Codata first
+    // Try to load from local data first
     if (typeof CodataAPI !== 'undefined') {
         try {
             itinerary = await CodataAPI.getItinerary(itineraryId);
         } catch (error) {
-            console.warn('Codata unavailable, using localStorage fallback');
+            console.warn('local data unavailable, using localStorage fallback');
         }
     }
     
@@ -316,13 +316,13 @@ async function saveAllChanges() {
         }
     });
     
-    // Save to Codata backend
+    // Save to local data backend
     if (typeof CodataAPI !== 'undefined') {
         try {
             await CodataAPI.updateItinerary(currentItinerary.id, currentItinerary);
-            console.log('Saved to Codata successfully');
+            console.log('Saved to local data successfully');
         } catch (error) {
-            console.error('Failed to save to Codata:', error);
+            console.error('Failed to save to local data:', error);
         }
     }
     

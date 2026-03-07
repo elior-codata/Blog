@@ -438,19 +438,19 @@ function updateAffiliateLinks(slug, countryName) {
 }
 
 async function loadItineraries(destinationSlug) {
-    // Try to load from Codata first, fallback to localStorage
-    let codataItineraries = null;
+    // Load from local data service, fallback to localStorage
+    let fetchedItineraries = null;
     
     if (typeof CodataAPI !== 'undefined') {
         try {
-            codataItineraries = await CodataAPI.getItineraries(destinationSlug);
+            fetchedItineraries = await CodataAPI.getItineraries(destinationSlug);
         } catch (error) {
-            console.warn('Codata unavailable, using localStorage fallback');
+            console.warn('Data service unavailable, using localStorage fallback');
         }
     }
     
-    if (codataItineraries && Array.isArray(codataItineraries) && codataItineraries.length > 0) {
-        itineraries = codataItineraries;
+    if (fetchedItineraries && Array.isArray(fetchedItineraries) && fetchedItineraries.length > 0) {
+        itineraries = fetchedItineraries;
     } else {
         // Fallback to localStorage
         const stored = localStorage.getItem(`itineraries_${destinationSlug}`);
@@ -492,10 +492,10 @@ async function saveItineraries(destinationSlug = null) {
     // Save to localStorage as backup
     localStorage.setItem(`itineraries_${slug}`, JSON.stringify(itineraries));
     
-    // Also save to Codata if available
+    // Also save to local data if available
     if (typeof CodataAPI !== 'undefined') {
         try {
-            // Update each itinerary in Codata
+            // Update each itinerary in local data
             for (const itinerary of itineraries) {
                 if (itinerary._isNew) {
                     delete itinerary._isNew;
@@ -506,7 +506,7 @@ async function saveItineraries(destinationSlug = null) {
                 }
             }
         } catch (error) {
-            console.error('Failed to save to Codata:', error);
+            console.error('Failed to save to local data:', error);
         }
     }
 }
@@ -627,12 +627,12 @@ function editItinerary(id) {
 async function deleteItinerary(id) {
     if (!confirm('Are you sure you want to delete this itinerary?')) return;
     
-    // Delete from Codata if available
+    // Delete from local data if available
     if (typeof CodataAPI !== 'undefined') {
         try {
             await CodataAPI.deleteItinerary(id);
         } catch (error) {
-            console.error('Failed to delete from Codata:', error);
+            console.error('Failed to delete from local data:', error);
         }
     }
     
