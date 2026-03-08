@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initWhereToGo();
     initSearch();
     initImageProtection();
+    initImageEditMode();
 });
 
 // ========================================
@@ -382,6 +383,7 @@ function initFilmStrip() {
     // Clone all frames for seamless infinite scroll
     frames.forEach(frame => {
         const clone = frame.cloneNode(true);
+        clone.classList.add('cloned-frame');
         track.appendChild(clone);
     });
     
@@ -745,6 +747,195 @@ console.log(
     '%cBeyond the Beaten Path',
     'font-size: 14px; color: #8b7355;'
 );
+
+// ========================================
+// Image Edit Mode System
+// ========================================
+
+let siteEditMode = false;
+
+function initImageEditMode() {
+    const editBtn = document.getElementById('siteEditBtn');
+    if (!editBtn) return;
+
+    // Check auth
+    const isAuth = localStorage.getItem('admin_authenticated') === 'true';
+    if (isAuth) {
+        editBtn.style.display = 'flex';
+    }
+
+    editBtn.addEventListener('click', toggleSiteEditMode);
+}
+
+function toggleSiteEditMode() {
+    siteEditMode = !siteEditMode;
+    document.body.classList.toggle('site-edit-mode', siteEditMode);
+
+    const editBtn = document.getElementById('siteEditBtn');
+    if (editBtn) editBtn.classList.toggle('active', siteEditMode);
+
+    if (siteEditMode) {
+        addEditOverlays();
+    } else {
+        removeEditOverlays();
+    }
+}
+
+function addEditOverlays() {
+    // Film strip frames — prevent link navigation in edit mode
+    document.querySelectorAll('.film-frame:not(.cloned-frame)').forEach((frame, i) => {
+        frame.addEventListener('click', filmEditBlocker);
+        const photo = frame.querySelector('.film-photo');
+        if (photo && !photo.querySelector('.edit-image-overlay')) {
+            const overlay = createEditOverlay('film', i);
+            photo.appendChild(overlay);
+        }
+    });
+
+    // Gallery items
+    document.querySelectorAll('.gallery-item').forEach((item, i) => {
+        if (item.querySelector('.edit-image-overlay')) return;
+        const overlay = createEditOverlay('gallery', i);
+        item.appendChild(overlay);
+    });
+}
+
+function filmEditBlocker(e) {
+    if (document.body.classList.contains('site-edit-mode')) {
+        e.preventDefault();
+    }
+}
+
+function removeEditOverlays() {
+    document.querySelectorAll('.edit-image-overlay').forEach(el => el.remove());
+}
+
+function createEditOverlay(type, index) {
+    const overlay = document.createElement('div');
+    overlay.className = 'edit-image-overlay';
+    overlay.innerHTML = `
+        <button class="edit-image-btn" title="Replace image">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Replace</span>
+        </button>
+    `;
+    overlay.querySelector('.edit-image-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerImageUpload(type, index);
+    });
+    return overlay;
+}
+
+function triggerImageUpload(type, index) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.style.display = 'none';
+    document.body.appendChild(input);
+
+    input.addEventListener('change', async () => {
+        const file = input.files[0];
+        if (!file) return;
+        input.remove();
+
+        // Show uploading state
+        const targetImg = getTargetImage(type, index);
+        if (!targetImg) return;
+
+        const originalSrc = targetImg.src;
+        targetImg.style.opacity = '0.5';
+
+        try {
+            const url = await uploadImage(file, type, index);
+            if (url) {
+                replaceImage(type, index, url);
+                saveImageEdit(type, index, url);
+            }
+        } catch (err) {
+            console.error('Upload failed:', err);
+            targetImg.style.opacity = '1';
+            alert('Upload failed. Make sure the server is running with server.py');
+        }
+    });
+
+    input.click();
+}
+
+function getTargetImage(type, index) {
+    if (type === 'film') {
+        const frames = document.querySelectorAll('.film-frame:not(.cloned-frame) .film-photo img');
+        return frames[index] || null;
+    } else if (type === 'gallery') {
+        const items = document.querySelectorAll('.gallery-item img');
+        return items[index] || null;
+    }
+    return null;
+}
+
+async function uploadImage(file, type, index) {
+    const formData = new FormData();
+    // Generate a clean filename
+    const ext = file.name.split('.').pop().toLowerCase();
+    const safeName = `${type}-${index}-${Date.now()}.${ext}`;
+    formData.append('image', file, safeName);
+
+    const response = await fetch('/upload', { method: 'POST', body: formData });
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || `Upload failed (${response.status})`);
+    }
+    const data = await response.json();
+    return data.url;
+}
+
+function replaceImage(type, index, newSrc) {
+    if (type === 'film') {
+        // Replace in original frames
+        const origFrames = document.querySelectorAll('.film-frame:not(.cloned-frame) .film-photo img');
+        if (origFrames[index]) {
+            origFrames[index].src = newSrc;
+            origFrames[index].style.opacity = '1';
+        }
+        // Also replace in cloned frames (film strip clones for infinite scroll)
+        const clonedFrames = document.querySelectorAll('.cloned-frame .film-photo img');
+        if (clonedFrames[index]) {
+            clonedFrames[index].src = newSrc;
+        }
+    } else if (type === 'gallery') {
+        const items = document.querySelectorAll('.gallery-item img');
+        if (items[index]) {
+            items[index].src = newSrc;
+            items[index].style.opacity = '1';
+        }
+    }
+}
+
+function saveImageEdit(type, index, url) {
+    const edits = JSON.parse(localStorage.getItem('imageEdits') || '{}');
+    const key = `${type}_${index}`;
+    edits[key] = url;
+    localStorage.setItem('imageEdits', JSON.stringify(edits));
+}
+
+function loadSavedImageEdits() {
+    const edits = JSON.parse(localStorage.getItem('imageEdits') || '{}');
+    for (const [key, url] of Object.entries(edits)) {
+        const [type, indexStr] = key.split('_');
+        const index = parseInt(indexStr, 10);
+        replaceImage(type, index, url);
+    }
+}
+
+// Load saved edits on every page load
+document.addEventListener('DOMContentLoaded', loadSavedImageEdits);
+
+// Make functions globally available
+window.toggleSiteEditMode = toggleSiteEditMode;
 
 // ========================================
 // Admin Authentication (Site-wide)

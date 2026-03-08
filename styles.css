@@ -2097,6 +2097,111 @@ img[loading="lazy"].loaded {
 }
 
 /* ========================================
+   Site-wide Image Edit Mode
+   ======================================== */
+
+/* Edit overlay on each image */
+.edit-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.site-edit-mode .edit-image-overlay {
+    pointer-events: auto;
+}
+
+.site-edit-mode .edit-image-overlay:hover {
+    opacity: 1;
+}
+
+.edit-image-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.edit-image-btn:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+.edit-image-btn svg {
+    stroke: currentColor;
+}
+
+/* In edit mode: disable link navigation on film frames */
+.site-edit-mode .film-frame {
+    pointer-events: auto;
+    cursor: default;
+}
+
+/* In edit mode: disable gallery lightbox click */
+.site-edit-mode .gallery-item {
+    cursor: default;
+}
+
+/* Edit mode indicator border */
+.site-edit-mode .film-strip {
+    outline: 3px dashed var(--color-primary);
+    outline-offset: -3px;
+}
+
+.site-edit-mode .gallery-grid {
+    outline: 3px dashed var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 8px;
+}
+
+/* Site edit button (pencil FAB) */
+#siteEditBtn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+#siteEditBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+#siteEditBtn.active {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+/* ========================================
    Destinations Page
    ======================================== */
 .destinations-page {
