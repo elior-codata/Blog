@@ -838,29 +838,28 @@ function triggerImageUpload(type, index) {
     input.style.display = 'none';
     document.body.appendChild(input);
 
-    input.addEventListener('change', async () => {
+    input.addEventListener('change', () => {
         const file = input.files[0];
         if (!file) return;
         input.remove();
 
-        // Show uploading state
         const targetImg = getTargetImage(type, index);
         if (!targetImg) return;
 
-        const originalSrc = targetImg.src;
         targetImg.style.opacity = '0.5';
 
-        try {
-            const url = await uploadImage(file, type, index);
-            if (url) {
-                replaceImage(type, index, url);
-                saveImageEdit(type, index, url);
-            }
-        } catch (err) {
-            console.error('Upload failed:', err);
+        // Read file as data URL — no server needed
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const dataUrl = e.target.result;
+            replaceImage(type, index, dataUrl);
+            saveImageEdit(type, index, dataUrl);
+        };
+        reader.onerror = () => {
             targetImg.style.opacity = '1';
-            alert('Upload failed. Make sure the server is running with server.py');
-        }
+            alert('Failed to read image file.');
+        };
+        reader.readAsDataURL(file);
     });
 
     input.click();
@@ -875,22 +874,6 @@ function getTargetImage(type, index) {
         return items[index] || null;
     }
     return null;
-}
-
-async function uploadImage(file, type, index) {
-    const formData = new FormData();
-    // Generate a clean filename
-    const ext = file.name.split('.').pop().toLowerCase();
-    const safeName = `${type}-${index}-${Date.now()}.${ext}`;
-    formData.append('image', file, safeName);
-
-    const response = await fetch('/upload', { method: 'POST', body: formData });
-    if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || `Upload failed (${response.status})`);
-    }
-    const data = await response.json();
-    return data.url;
 }
 
 function replaceImage(type, index, newSrc) {
