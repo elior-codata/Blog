@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearch();
     initImageProtection();
     initImageEditMode();
+    loadSavedImageEdits();
 });
 
 // ========================================
@@ -848,12 +849,20 @@ function triggerImageUpload(type, index) {
 
         targetImg.style.opacity = '0.5';
 
-        // Read file as data URL — no server needed
+        // Read file, compress via canvas, then store
         const reader = new FileReader();
         reader.onload = (e) => {
-            const dataUrl = e.target.result;
-            replaceImage(type, index, dataUrl);
-            saveImageEdit(type, index, dataUrl);
+            const img = new Image();
+            img.onload = () => {
+                const compressed = compressImage(img, 1200, 0.8);
+                replaceImage(type, index, compressed);
+                saveImageEdit(type, index, compressed);
+            };
+            img.onerror = () => {
+                targetImg.style.opacity = '1';
+                alert('Failed to load image.');
+            };
+            img.src = e.target.result;
         };
         reader.onerror = () => {
             targetImg.style.opacity = '1';
@@ -902,7 +911,43 @@ function saveImageEdit(type, index, url) {
     const edits = JSON.parse(localStorage.getItem('imageEdits') || '{}');
     const key = `${type}_${index}`;
     edits[key] = url;
-    localStorage.setItem('imageEdits', JSON.stringify(edits));
+    try {
+        localStorage.setItem('imageEdits', JSON.stringify(edits));
+    } catch (e) {
+        console.error('localStorage quota exceeded, trying to clear old edits');
+        // If full, clear old edits and retry with just this one
+        try {
+            const fresh = {};
+            fresh[key] = url;
+            localStorage.setItem('imageEdits', JSON.stringify(fresh));
+        } catch (e2) {
+            alert('Image too large to save. Try a smaller image.');
+        }
+    }
+}
+
+// Compress image via canvas to fit in localStorage
+function compressImage(img, maxDim, quality) {
+    const canvas = document.createElement('canvas');
+    let w = img.naturalWidth || img.width;
+    let h = img.naturalHeight || img.height;
+
+    // Scale down if larger than maxDim
+    if (w > maxDim || h > maxDim) {
+        if (w > h) {
+            h = Math.round(h * maxDim / w);
+            w = maxDim;
+        } else {
+            w = Math.round(w * maxDim / h);
+            h = maxDim;
+        }
+    }
+
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    return canvas.toDataURL('image/jpeg', quality);
 }
 
 function loadSavedImageEdits() {
@@ -914,8 +959,8 @@ function loadSavedImageEdits() {
     }
 }
 
-// Load saved edits on every page load
-document.addEventListener('DOMContentLoaded', loadSavedImageEdits);
+// loadSavedImageEdits is called from the main DOMContentLoaded handler
+// (after initFilmStrip clones frames, so clones also get updated)
 
 // Make functions globally available
 window.toggleSiteEditMode = toggleSiteEditMode;

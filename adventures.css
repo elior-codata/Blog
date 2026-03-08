@@ -11,6 +11,8 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: var(--color-primary);
+    margin-top: 0;
 }
 
 .adventures-hero .hero-image {
