@@ -371,6 +371,64 @@
         </div>
     </footer>
 
+    <!-- Admin Login Modal -->
+    <div class="admin-modal" id="adminLoginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideAdminLogin()">&times;</button>
+            <div class="login-icon">🔐</div>
+            <h2>Admin Login</h2>
+            <p class="login-subtitle">Enter password to enable edit mode</p>
+            <div class="form-group">
+                <input type="password" id="adminPasswordHome" placeholder="Password" onkeydown="if(event.key==='Enter') attemptAdminLogin()">
+            </div>
+            <p class="login-error" id="loginErrorHome" style="display:none">Incorrect password. Try again.</p>
+            <button class="login-btn" onclick="attemptAdminLogin()">Login</button>
+            <p class="login-hint">Hint: Ctrl+Shift+L to open this dialog</p>
+        </div>
+    </div>
+
+    <!-- Floating Add Destination Button (admin only) -->
+    <button class="floating-add-btn" id="addDestinationBtn" style="display:none" title="Add New Destination">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
+
+    <!-- Add Destination Modal -->
+    <div class="admin-modal" id="addDestinationModal">
+        <div class="modal-content" style="max-width:500px">
+            <button class="modal-close" onclick="hideAddDestinationModal()">&times;</button>
+            <h2>Add New Destination</h2>
+            <p class="login-subtitle">Fill in the details for the new destination</p>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Name *</label>
+                <input type="text" id="newDestName" placeholder="e.g., Morocco" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Subtitle</label>
+                <input type="text" id="newDestSubtitle" placeholder="e.g., Marrakech, Fez, Sahara Desert" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Region *</label>
+                <select id="newDestRegion" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body);background:white">
+                    <option value="europe">Europe</option>
+                    <option value="asia">Asia</option>
+                    <option value="americas">Americas</option>
+                    <option value="africa">Africa & Middle East</option>
+                    <option value="oceania">Oceania</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Image</label>
+                <div id="destImageUploadArea" onclick="document.getElementById('newDestImageFile').click()" style="width:100%;padding:2rem 1rem;border:2px dashed #ccc;border-radius:8px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#fafafa">
+                    <div id="destImagePreview" style="display:none;margin-bottom:0.5rem"><img id="destPreviewImg" style="max-width:100%;max-height:150px;border-radius:6px" alt="Preview"></div>
+                    <span id="destUploadText" style="color:#888;font-size:0.9rem">📷 Click to upload an image</span>
+                </div>
+                <input type="file" id="newDestImageFile" accept="image/*" style="display:none">
+            </div>
+            <p class="login-error" id="destFormError" style="display:none">Please fill in at least the destination name and region.</p>
+            <button class="login-btn" onclick="saveNewDestination()">Add Destination</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
         // Region filter
@@ -397,6 +455,19 @@
                 });
             });
             
+            // Show add button if admin
+            if (localStorage.getItem('admin_authenticated') === 'true') {
+                const addBtn = document.getElementById('addDestinationBtn');
+                if (addBtn) addBtn.style.display = 'flex';
+            }
+
+            // Add button click
+            const addBtn = document.getElementById('addDestinationBtn');
+            if (addBtn) addBtn.addEventListener('click', showAddDestinationModal);
+
+            // Load custom destinations from localStorage
+            loadCustomDestinations();
+
             // Handle search query from URL
             const params = new URLSearchParams(window.location.search);
             const searchQuery = params.get('search');
@@ -415,6 +486,106 @@
                 const navSearch = document.getElementById('navSearchInput');
                 if (navSearch) navSearch.value = searchQuery;
             }
+        });
+        function showAddDestinationModal() {
+            const modal = document.getElementById('addDestinationModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function hideAddDestinationModal() {
+            const modal = document.getElementById('addDestinationModal');
+            if (modal) modal.classList.remove('active');
+            document.getElementById('newDestName').value = '';
+            document.getElementById('newDestSubtitle').value = '';
+            document.getElementById('newDestImageFile').value = '';
+            document.getElementById('destImagePreview').style.display = 'none';
+            document.getElementById('destUploadText').textContent = '📷 Click to upload an image';
+            window._destImageData = null;
+            document.getElementById('destFormError').style.display = 'none';
+        }
+
+        function saveNewDestination() {
+            const name = document.getElementById('newDestName').value.trim();
+            const subtitle = document.getElementById('newDestSubtitle').value.trim();
+            const region = document.getElementById('newDestRegion').value;
+            const image = window._destImageData || '';
+
+            if (!name) {
+                document.getElementById('destFormError').style.display = 'block';
+                return;
+            }
+
+            const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '');
+            const dest = { name, subtitle, region, image, slug };
+
+            // Save to localStorage
+            const custom = JSON.parse(localStorage.getItem('custom_destinations') || '[]');
+            custom.push(dest);
+            localStorage.setItem('custom_destinations', JSON.stringify(custom));
+
+            // Add card to the grid
+            appendDestinationCard(dest);
+            hideAddDestinationModal();
+        }
+
+        function appendDestinationCard(dest) {
+            const grid = document.getElementById('allDestinationsGrid');
+            if (!grid) return;
+
+            const defaultImg = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&q=80';
+            const card = document.createElement('a');
+            card.href = `destination.html?d=${dest.slug}`;
+            card.className = 'dest-card';
+            card.dataset.region = dest.region;
+            card.innerHTML = `
+                <div class="dest-card-image">
+                    <img src="${dest.image || defaultImg}" alt="${dest.name}">
+                </div>
+                <div class="dest-card-info">
+                    <h3>${dest.name}</h3>
+                    <span>${dest.subtitle || ''}</span>
+                </div>
+            `;
+            grid.appendChild(card);
+
+            // Apply current filter
+            const activeFilter = document.querySelector('.filter-btn.active');
+            if (activeFilter) {
+                const activeRegion = activeFilter.dataset.region;
+                if (activeRegion !== 'all' && dest.region !== activeRegion) {
+                    card.style.display = 'none';
+                }
+            }
+        }
+
+        function loadCustomDestinations() {
+            const custom = JSON.parse(localStorage.getItem('custom_destinations') || '[]');
+            custom.forEach(dest => appendDestinationCard(dest));
+        }
+
+        // File upload handler for destination image
+        document.getElementById('newDestImageFile').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const compressed = compressImage(img, 1200, 0.8);
+                    window._destImageData = compressed;
+                    document.getElementById('destPreviewImg').src = compressed;
+                    document.getElementById('destImagePreview').style.display = 'block';
+                    document.getElementById('destUploadText').textContent = '✅ Image loaded — click to change';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Close add-destination modal on background click
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('addDestinationModal');
+            if (e.target === modal) hideAddDestinationModal();
         });
     </script>
 </body>

@@ -1999,6 +1999,41 @@ img[loading="lazy"].loaded {
     opacity: 0.7;
 }
 
+/* Floating Add Button (shared across pages) */
+.floating-add-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.floating-add-btn:hover {
+    background: var(--color-primary);
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.35);
+}
+
+.floating-add-btn svg {
+    stroke: white;
+}
+
+/* Admin modal form-group spacing */
+.admin-modal .form-group {
+    margin-bottom: 1rem;
+}
+
 /* Admin Footer Link */
 .footer-bottom {
     display: flex;

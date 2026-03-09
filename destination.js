@@ -397,6 +397,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load any custom edits
     try { loadCustomData(); } catch(e) { console.error('loadCustomData error:', e); }
+    
+    // Load saved hero image (overrides default if edited)
+    try { loadSavedHeroImage(); } catch(e) { console.error('loadSavedHeroImage error:', e); }
 });
 
 // ========================================
@@ -757,10 +760,10 @@ function checkAuth() {
 }
 
 function initAuth() {
-    // Always show edit button - no auth required
     const editBtn = document.getElementById('floatingEditBtn');
     if (editBtn) {
-        editBtn.style.display = 'flex';
+        // Only show edit button if admin is authenticated
+        editBtn.style.display = isAuthenticated ? 'flex' : 'none';
     }
 }
 
@@ -820,8 +823,110 @@ function toggleEditMode() {
     
     if (isEditMode) {
         enableEditableElements();
+        addHeroEditOverlay();
     } else {
         disableEditableElements();
+        removeHeroEditOverlay();
+    }
+}
+
+// ========================================
+// Hero Image Editing
+// ========================================
+
+function addHeroEditOverlay() {
+    const hero = document.getElementById('destinationHero');
+    if (!hero || hero.querySelector('.edit-image-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'edit-image-overlay dest-hero-overlay';
+    overlay.innerHTML = `
+        <button class="edit-image-btn" title="Replace hero image">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <span>Replace</span>
+        </button>
+    `;
+    overlay.querySelector('.edit-image-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerHeroImageUpload();
+    });
+    hero.appendChild(overlay);
+}
+
+function removeHeroEditOverlay() {
+    const hero = document.getElementById('destinationHero');
+    if (!hero) return;
+    const overlay = hero.querySelector('.edit-image-overlay');
+    if (overlay) overlay.remove();
+}
+
+function triggerHeroImageUpload() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.style.display = 'none';
+    document.body.appendChild(input);
+
+    input.addEventListener('change', () => {
+        const file = input.files[0];
+        if (!file) return;
+        input.remove();
+
+        const hero = document.getElementById('destinationHero');
+        if (!hero) return;
+        hero.style.opacity = '0.5';
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                // Use shared compressImage from script.js
+                const compressed = compressImage(img, 1200, 0.8);
+                hero.style.backgroundImage = `url(${compressed})`;
+                hero.style.opacity = '1';
+                saveHeroImage(compressed);
+            };
+            img.onerror = () => {
+                hero.style.opacity = '1';
+                alert('Failed to load image.');
+            };
+            img.src = e.target.result;
+        };
+        reader.onerror = () => {
+            hero.style.opacity = '1';
+            alert('Failed to read image file.');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    input.click();
+}
+
+function saveHeroImage(dataUrl) {
+    const slug = new URLSearchParams(window.location.search).get('d') ||
+                 new URLSearchParams(window.location.search).get('country') || 'italy';
+    const key = `dest_hero_${slug}`;
+    try {
+        localStorage.setItem(key, dataUrl);
+    } catch (e) {
+        console.error('localStorage quota exceeded for hero image');
+        alert('Image too large to save. Try a smaller image.');
+    }
+}
+
+function loadSavedHeroImage() {
+    const slug = new URLSearchParams(window.location.search).get('d') ||
+                 new URLSearchParams(window.location.search).get('country') || 'italy';
+    const key = `dest_hero_${slug}`;
+    const saved = localStorage.getItem(key);
+    if (saved) {
+        const hero = document.getElementById('destinationHero');
+        if (hero) hero.style.backgroundImage = `url(${saved})`;
     }
 }
 
@@ -1427,6 +1532,16 @@ function initEventListeners() {
             }
         });
     });
+
+    // Close admin login modal on background click
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                hideLoginModal();
+            }
+        });
+    }
     
     // Navbar scroll
     window.addEventListener('scroll', () => {
@@ -1683,6 +1798,8 @@ window.deleteCustomSection = deleteCustomSection;
 window.toggleSectionMenu = toggleSectionMenu;
 window.addSectionDirect = addSectionDirect;
 window.logout = logout;
+window.hideLoginModal = hideLoginModal;
+window.attemptLogin = attemptLogin;
 window.applyGalleryImages = applyGalleryImages;
 window.applyTips = applyTips;
 window.applyHighlights = applyHighlights;

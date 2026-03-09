@@ -460,6 +460,15 @@ body.edit-mode .floating-edit-btn {
     display: none;
 }
 
+/* Hero image edit overlay in destination edit mode */
+body.edit-mode .dest-hero-overlay {
+    pointer-events: auto;
+}
+
+body.edit-mode .dest-hero-overlay:hover {
+    opacity: 1;
+}
+
 /* Section Placeholders */
 .section-placeholder {
     display: none;

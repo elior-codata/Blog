@@ -336,7 +336,221 @@
         </div>
     </footer>
 
+    <!-- Admin Login Modal -->
+    <div class="admin-modal" id="adminLoginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideAdminLogin()">&times;</button>
+            <div class="login-icon">🔐</div>
+            <h2>Admin Login</h2>
+            <p class="login-subtitle">Enter password to enable edit mode</p>
+            <div class="form-group">
+                <input type="password" id="adminPasswordHome" placeholder="Password" onkeydown="if(event.key==='Enter') attemptAdminLogin()">
+            </div>
+            <p class="login-error" id="loginErrorHome" style="display:none">Incorrect password. Try again.</p>
+            <button class="login-btn" onclick="attemptAdminLogin()">Login</button>
+            <p class="login-hint">Hint: Ctrl+Shift+L to open this dialog</p>
+        </div>
+    </div>
+
+    <!-- Floating Add Adventure Button (admin only) -->
+    <button class="floating-add-btn" id="addAdventureBtn" style="display:none" title="Add New Adventure">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
+
+    <!-- Add Adventure Modal -->
+    <div class="admin-modal" id="addAdventureModal">
+        <div class="modal-content" style="max-width:540px">
+            <button class="modal-close" onclick="hideAddAdventureModal()">&times;</button>
+            <h2>Add New Adventure</h2>
+            <p class="login-subtitle">Fill in the details for your new adventure</p>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Title *</label>
+                <input type="text" id="newAdvTitle" placeholder="e.g., Trans-Siberian Railway" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Description</label>
+                <textarea id="newAdvDesc" rows="3" placeholder="Describe the adventure..." style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body);resize:vertical"></textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+                <div class="form-group">
+                    <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Duration</label>
+                    <input type="text" id="newAdvDuration" placeholder="e.g., 3 Months" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+                </div>
+                <div class="form-group">
+                    <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Icon (emoji)</label>
+                    <input type="text" id="newAdvIcon" placeholder="🌍" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Status</label>
+                <select id="newAdvStatus" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body);background:white">
+                    <option value="planned">Planned</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+                <div class="form-group">
+                    <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Stat 1 Value</label>
+                    <input type="text" id="newAdvStat1Val" placeholder="12" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+                </div>
+                <div class="form-group">
+                    <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Stat 1 Label</label>
+                    <input type="text" id="newAdvStat1Lbl" placeholder="Countries" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+                </div>
+                <div class="form-group">
+                    <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Days</label>
+                    <input type="text" id="newAdvDays" placeholder="90" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Route (emoji flags)</label>
+                <input type="text" id="newAdvRoute" placeholder="🇹🇭 → 🇱🇦 → 🇻🇳" style="width:100%;padding:0.75rem 1rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;font-family:var(--font-body)">
+            </div>
+            <div class="form-group">
+                <label style="display:block;margin-bottom:0.3rem;font-weight:600;font-size:0.85rem">Image</label>
+                <div id="advImageUploadArea" onclick="document.getElementById('newAdvImageFile').click()" style="width:100%;padding:2rem 1rem;border:2px dashed #ccc;border-radius:8px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#fafafa">
+                    <div id="advImagePreview" style="display:none;margin-bottom:0.5rem"><img id="advPreviewImg" style="max-width:100%;max-height:150px;border-radius:6px" alt="Preview"></div>
+                    <span id="advUploadText" style="color:#888;font-size:0.9rem">📷 Click to upload an image</span>
+                </div>
+                <input type="file" id="newAdvImageFile" accept="image/*" style="display:none">
+            </div>
+            <p class="login-error" id="advFormError" style="display:none">Please fill in at least the adventure title.</p>
+            <button class="login-btn" onclick="saveNewAdventure()">Add Adventure</button>
+        </div>
+    </div>
+
     <script src="local-data.js"></script>
     <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Show add button if admin
+        if (localStorage.getItem('admin_authenticated') === 'true') {
+            const addBtn = document.getElementById('addAdventureBtn');
+            if (addBtn) addBtn.style.display = 'flex';
+        }
+
+        // Add button click
+        const addBtn = document.getElementById('addAdventureBtn');
+        if (addBtn) addBtn.addEventListener('click', showAddAdventureModal);
+
+        // Load custom adventures from localStorage
+        loadCustomAdventures();
+    });
+
+    function showAddAdventureModal() {
+        const modal = document.getElementById('addAdventureModal');
+        if (modal) modal.classList.add('active');
+    }
+
+    function hideAddAdventureModal() {
+        const modal = document.getElementById('addAdventureModal');
+        if (modal) modal.classList.remove('active');
+        document.getElementById('newAdvTitle').value = '';
+        document.getElementById('newAdvDesc').value = '';
+        document.getElementById('newAdvDuration').value = '';
+        document.getElementById('newAdvIcon').value = '';
+        document.getElementById('newAdvStat1Val').value = '';
+        document.getElementById('newAdvStat1Lbl').value = '';
+        document.getElementById('newAdvDays').value = '';
+        document.getElementById('newAdvRoute').value = '';
+        document.getElementById('newAdvImageFile').value = '';
+        document.getElementById('advImagePreview').style.display = 'none';
+        document.getElementById('advUploadText').textContent = '📷 Click to upload an image';
+        window._advImageData = null;
+        document.getElementById('advFormError').style.display = 'none';
+    }
+
+    function saveNewAdventure() {
+        const title = document.getElementById('newAdvTitle').value.trim();
+        const desc = document.getElementById('newAdvDesc').value.trim();
+        const duration = document.getElementById('newAdvDuration').value.trim();
+        const icon = document.getElementById('newAdvIcon').value.trim() || '🌍';
+        const status = document.getElementById('newAdvStatus').value;
+        const stat1Val = document.getElementById('newAdvStat1Val').value.trim();
+        const stat1Lbl = document.getElementById('newAdvStat1Lbl').value.trim();
+        const days = document.getElementById('newAdvDays').value.trim();
+        const route = document.getElementById('newAdvRoute').value.trim();
+        const image = window._advImageData || '';
+
+        if (!title) {
+            document.getElementById('advFormError').style.display = 'block';
+            return;
+        }
+
+        const adventure = { title, desc, duration, icon, status, stat1Val, stat1Lbl, days, route, image };
+
+        // Save to localStorage
+        const custom = JSON.parse(localStorage.getItem('custom_adventures') || '[]');
+        custom.push(adventure);
+        localStorage.setItem('custom_adventures', JSON.stringify(custom));
+
+        // Add card to the grid
+        appendAdventureCard(adventure);
+        hideAddAdventureModal();
+    }
+
+    function appendAdventureCard(adv) {
+        const grid = document.querySelector('.adventures-grid');
+        if (!grid) return;
+
+        const defaultImg = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80';
+        const statusLabels = { planned: 'Planned', ongoing: 'Ongoing', completed: 'Completed' };
+
+        const card = document.createElement('article');
+        card.className = 'adventure-card';
+        card.innerHTML = `
+            <div class="adventure-image">
+                <img src="${adv.image || defaultImg}" alt="${adv.title}">
+                <div class="adventure-status ${adv.status}">${statusLabels[adv.status] || 'Planned'}</div>
+            </div>
+            <div class="adventure-content">
+                <div class="adventure-meta">
+                    <span class="adventure-icon">${adv.icon || '🌍'}</span>
+                    <span class="adventure-duration">${adv.duration || ''}</span>
+                </div>
+                <h2>${adv.title}</h2>
+                ${adv.desc ? `<p class="adventure-description">${adv.desc}</p>` : ''}
+                <div class="adventure-stats">
+                    ${adv.stat1Val ? `<div class="stat"><span class="stat-value">${adv.stat1Val}</span><span class="stat-label">${adv.stat1Lbl || 'Places'}</span></div>` : ''}
+                    ${adv.days ? `<div class="stat"><span class="stat-value">${adv.days}</span><span class="stat-label">Days</span></div>` : ''}
+                </div>
+                ${adv.route ? `<div class="adventure-route"><span class="route-label">Route:</span><span class="route-path">${adv.route}</span></div>` : ''}
+                <a href="#" class="adventure-link">Read More →</a>
+            </div>
+        `;
+        grid.appendChild(card);
+    }
+
+    function loadCustomAdventures() {
+        const custom = JSON.parse(localStorage.getItem('custom_adventures') || '[]');
+        custom.forEach(adv => appendAdventureCard(adv));
+    }
+
+    // File upload handler for adventure image
+    document.getElementById('newAdvImageFile').addEventListener('change', function() {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const compressed = compressImage(img, 1200, 0.8);
+                window._advImageData = compressed;
+                document.getElementById('advPreviewImg').src = compressed;
+                document.getElementById('advImagePreview').style.display = 'block';
+                document.getElementById('advUploadText').textContent = '✅ Image loaded — click to change';
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Close modal on background click
+    document.addEventListener('click', (e) => {
+        const modal = document.getElementById('addAdventureModal');
+        if (e.target === modal) hideAddAdventureModal();
+    });
+    </script>
 </body>
 </html>
