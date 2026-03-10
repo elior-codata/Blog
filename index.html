@@ -23,29 +23,69 @@
                 <ul class="nav-menu">
                     <li class="nav-item dropdown">
                         <a href="destinations.html" class="nav-link">Destinations</a>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-column">
-                                <h4>Europe</h4>
-                                <a href="destination.html?d=italy">Italy</a>
-                                <a href="destination.html?d=greece">Greece</a>
-                                <a href="destination.html?d=portugal">Portugal</a>
-                                <a href="destination.html?d=spain">Spain</a>
-                                <a href="destination.html?d=france">France</a>
-                            </div>
-                            <div class="dropdown-column">
-                                <h4>Asia</h4>
-                                <a href="destination.html?d=bali">Bali</a>
-                                <a href="destination.html?d=japan">Japan</a>
-                                <a href="destination.html?d=thailand">Thailand</a>
-                                <a href="destination.html?d=vietnam">Vietnam</a>
-                                <a href="destination.html?d=srilanka">Sri Lanka</a>
-                            </div>
-                            <div class="dropdown-column">
-                                <h4>Americas</h4>
-                                <a href="destination.html?d=mexico">Mexico</a>
-                                <a href="destination.html?d=costarica">Costa Rica</a>
-                                <a href="destination.html?d=peru">Peru</a>
-                                <a href="destination.html?d=colombia">Colombia</a>
+                        <div class="dropdown-menu dropdown-hierarchical">
+                            <ul class="dropdown-continents">
+                                <li class="dropdown-continent active" data-continent="europe">
+                                    <span>Europe</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </li>
+                                <li class="dropdown-continent" data-continent="asia">
+                                    <span>Asia</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </li>
+                                <li class="dropdown-continent" data-continent="americas">
+                                    <span>Americas</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </li>
+                                <li class="dropdown-continent" data-continent="africa">
+                                    <span>Africa & Middle East</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </li>
+                                <li class="dropdown-continent" data-continent="oceania">
+                                    <span>Oceania</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </li>
+                            </ul>
+                            <div class="dropdown-countries-panel">
+                                <div class="dropdown-countries active" data-continent="europe">
+                                    <a href="destination.html?d=italy">Italy</a>
+                                    <a href="destination.html?d=greece">Greece</a>
+                                    <a href="destination.html?d=portugal">Portugal</a>
+                                    <a href="destination.html?d=spain">Spain</a>
+                                    <a href="destination.html?d=france">France</a>
+                                    <a href="destination.html?d=croatia">Croatia</a>
+                                    <a href="destination.html?d=iceland">Iceland</a>
+                                    <a href="destination.html?d=norway">Norway</a>
+                                    <a href="destination.html?d=netherlands">Netherlands</a>
+                                    <a href="destination.html?d=austria">Austria</a>
+                                    <a href="destination.html?d=switzerland">Switzerland</a>
+                                </div>
+                                <div class="dropdown-countries" data-continent="asia">
+                                    <a href="destination.html?d=bali">Bali</a>
+                                    <a href="destination.html?d=japan">Japan</a>
+                                    <a href="destination.html?d=thailand">Thailand</a>
+                                    <a href="destination.html?d=vietnam">Vietnam</a>
+                                    <a href="destination.html?d=srilanka">Sri Lanka</a>
+                                    <a href="destination.html?d=india">India</a>
+                                    <a href="destination.html?d=maldives">Maldives</a>
+                                </div>
+                                <div class="dropdown-countries" data-continent="americas">
+                                    <a href="destination.html?d=mexico">Mexico</a>
+                                    <a href="destination.html?d=costarica">Costa Rica</a>
+                                    <a href="destination.html?d=peru">Peru</a>
+                                    <a href="destination.html?d=colombia">Colombia</a>
+                                    <a href="destination.html?d=brazil">Brazil</a>
+                                </div>
+                                <div class="dropdown-countries" data-continent="africa">
+                                    <a href="destination.html?d=morocco">Morocco</a>
+                                    <a href="destination.html?d=egypt">Egypt</a>
+                                    <a href="destination.html?d=tanzania">Tanzania</a>
+                                    <a href="destination.html?d=jordan">Jordan</a>
+                                </div>
+                                <div class="dropdown-countries" data-continent="oceania">
+                                    <a href="destination.html?d=australia">Australia</a>
+                                    <a href="destination.html?d=newzealand">New Zealand</a>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -291,7 +331,7 @@
                         <span class="cta-feature-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                         </span>
-                        <span>Founder Curated</span>
+                        <span>Optimized by Our Founders</span>
                     </div>
                 </div>
                 <form class="cta-form" id="customItineraryForm">
@@ -409,13 +449,39 @@
                         </div>
                     </div>
                     <div class="cta-form-row cta-dates-row">
-                        <div class="cta-date-field">
-                            <label for="ctaDateFrom">From</label>
-                            <input type="date" id="ctaDateFrom" name="dateFrom">
+                        <div class="cta-date-field cta-month-field">
+                            <label for="ctaTravelMonth">Month</label>
+                            <div class="cta-month-trigger" id="ctaMonthTrigger" tabindex="0">
+                                <svg class="cta-month-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <span class="cta-month-text" id="ctaMonthText">Select month</span>
+                                <input type="hidden" id="ctaTravelMonth" name="travelMonth">
+                            </div>
+                            <div class="cta-month-dropdown" id="ctaMonthDropdown">
+                                <div class="cta-month-nav">
+                                    <button type="button" class="cta-month-nav-btn" id="ctaMonthPrev">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                    </button>
+                                    <span class="cta-month-year" id="ctaMonthYear">2026</span>
+                                    <button type="button" class="cta-month-nav-btn" id="ctaMonthNext">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                    </button>
+                                </div>
+                                <div class="cta-month-grid" id="ctaMonthGrid"></div>
+                                <button type="button" class="cta-month-flexible" id="ctaMonthFlexible">I'm flexible</button>
+                            </div>
                         </div>
                         <div class="cta-date-field">
-                            <label for="ctaDateTo">To</label>
-                            <input type="date" id="ctaDateTo" name="dateTo">
+                            <label for="ctaDuration">Duration</label>
+                            <select id="ctaDuration" name="duration">
+                                <option value="" disabled selected>Select...</option>
+                                <option value="3-5 days">3–5 days</option>
+                                <option value="1 week">1 week</option>
+                                <option value="10 days">10 days</option>
+                                <option value="2 weeks">2 weeks</option>
+                                <option value="3 weeks">3 weeks</option>
+                                <option value="1 month+">1 month+</option>
+                                <option value="Flexible">Flexible</option>
+                            </select>
                         </div>
                     </div>
                     <textarea name="details" placeholder="Tell us more: travel style, interests, group size, budget range..." rows="3"></textarea>
@@ -423,7 +489,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                         Request Your Custom Itinerary
                     </button>
-                    <p class="cta-form-success" id="ctaFormSuccess" style="display:none">✓ Request sent! We'll get back to you within 48 hours.</p>
+                    <p class="cta-form-success" id="ctaFormSuccess" style="display:none">✓ Request sent! We'll get back to you at the email you provided within 48 hours. You can also reach us at <a href="mailto:info@itinerantpixels.com">info@itinerantpixels.com</a></p>
                 </form>
             </div>
         </div>

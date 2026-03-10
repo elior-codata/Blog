@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initImageEditMode();
     loadSavedImageEdits();
     initCustomItineraryForm();
+    initMonthPicker();
     initDestinationPicker();
 });
 
@@ -102,6 +103,22 @@ function initNavbar() {
         }
         
         lastScroll = currentScroll;
+    });
+
+    // Hierarchical dropdown - continent hover switches countries
+    document.querySelectorAll('.dropdown-hierarchical').forEach(menu => {
+        const continents = menu.querySelectorAll('.dropdown-continent');
+        const countryPanels = menu.querySelectorAll('.dropdown-countries');
+        continents.forEach(cont => {
+            cont.addEventListener('mouseenter', () => {
+                const target = cont.dataset.continent;
+                continents.forEach(c => c.classList.remove('active'));
+                countryPanels.forEach(p => p.classList.remove('active'));
+                cont.classList.add('active');
+                const panel = menu.querySelector('.dropdown-countries[data-continent="' + target + '"]');
+                if (panel) panel.classList.add('active');
+            });
+        });
     });
 }
 
@@ -1068,6 +1085,13 @@ function initCustomItineraryForm() {
         requests.push(entry);
         localStorage.setItem('itinerary_requests', JSON.stringify(requests));
 
+        // Send via Formsubmit
+        fetch('https://formsubmit.co/ajax/info@itinerantpixels.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(entry)
+        }).catch(() => {});
+
         // Show success
         const success = document.getElementById('ctaFormSuccess');
         if (success) success.style.display = 'block';
@@ -1076,6 +1100,114 @@ function initCustomItineraryForm() {
             el.style.opacity = '0.5';
             el.style.pointerEvents = 'none';
         });
+    });
+}
+
+// ========================================
+// Month Picker (Google Flights style)
+// ========================================
+
+function initMonthPicker() {
+    const trigger = document.getElementById('ctaMonthTrigger');
+    const dropdown = document.getElementById('ctaMonthDropdown');
+    const grid = document.getElementById('ctaMonthGrid');
+    const yearLabel = document.getElementById('ctaMonthYear');
+    const prevBtn = document.getElementById('ctaMonthPrev');
+    const nextBtn = document.getElementById('ctaMonthNext');
+    const flexBtn = document.getElementById('ctaMonthFlexible');
+    const hidden = document.getElementById('ctaTravelMonth');
+    const textEl = document.getElementById('ctaMonthText');
+    if (!trigger || !dropdown) return;
+
+    const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const now = new Date();
+    let currentYear = now.getFullYear();
+    let selectedMonth = null; // {month: 0-11, year: YYYY}
+    let isFlexible = false;
+
+    function renderGrid() {
+        yearLabel.textContent = currentYear;
+        grid.innerHTML = '';
+        MONTHS.forEach((m, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = m;
+            // Disable past months
+            const isPast = currentYear < now.getFullYear() || (currentYear === now.getFullYear() && i < now.getMonth());
+            if (isPast) {
+                btn.classList.add('past');
+            } else {
+                btn.addEventListener('click', () => selectMonth(i, currentYear));
+            }
+            // Highlight selected
+            if (!isFlexible && selectedMonth && selectedMonth.month === i && selectedMonth.year === currentYear) {
+                btn.classList.add('selected');
+            }
+            grid.appendChild(btn);
+        });
+    }
+
+    function selectMonth(month, year) {
+        isFlexible = false;
+        selectedMonth = { month, year };
+        hidden.value = MONTH_FULL[month] + ' ' + year;
+        textEl.textContent = MONTH_FULL[month] + ' ' + year;
+        textEl.classList.remove('placeholder');
+        flexBtn.classList.remove('selected');
+        renderGrid();
+        closeDropdown();
+    }
+
+    function selectFlexible() {
+        isFlexible = true;
+        selectedMonth = null;
+        hidden.value = 'Flexible';
+        textEl.textContent = "I'm flexible";
+        textEl.classList.remove('placeholder');
+        flexBtn.classList.add('selected');
+        grid.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+        closeDropdown();
+    }
+
+    function openDropdown() {
+        dropdown.classList.add('open');
+        trigger.classList.add('active');
+        renderGrid();
+    }
+
+    function closeDropdown() {
+        dropdown.classList.remove('open');
+        trigger.classList.remove('active');
+    }
+
+    function toggleDropdown() {
+        if (dropdown.classList.contains('open')) closeDropdown();
+        else openDropdown();
+    }
+
+    trigger.addEventListener('click', toggleDropdown);
+    trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDropdown(); }
+        if (e.key === 'Escape') closeDropdown();
+    });
+
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentYear > now.getFullYear()) { currentYear--; renderGrid(); }
+    });
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentYear++; renderGrid();
+    });
+    flexBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectFlexible();
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
     });
 }
 

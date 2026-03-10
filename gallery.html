@@ -211,29 +211,20 @@
                 <ul class="nav-menu">
                     <li class="nav-item dropdown">
                         <a href="destinations.html" class="nav-link">Destinations</a>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-column">
-                                <h4>Europe</h4>
-                                <a href="destination.html?d=italy">Italy</a>
-                                <a href="destination.html?d=greece">Greece</a>
-                                <a href="destination.html?d=portugal">Portugal</a>
-                                <a href="destination.html?d=spain">Spain</a>
-                                <a href="destination.html?d=france">France</a>
-                            </div>
-                            <div class="dropdown-column">
-                                <h4>Asia</h4>
-                                <a href="destination.html?d=bali">Bali</a>
-                                <a href="destination.html?d=japan">Japan</a>
-                                <a href="destination.html?d=thailand">Thailand</a>
-                                <a href="destination.html?d=vietnam">Vietnam</a>
-                                <a href="destination.html?d=srilanka">Sri Lanka</a>
-                            </div>
-                            <div class="dropdown-column">
-                                <h4>Americas</h4>
-                                <a href="destination.html?d=mexico">Mexico</a>
-                                <a href="destination.html?d=costarica">Costa Rica</a>
-                                <a href="destination.html?d=peru">Peru</a>
-                                <a href="destination.html?d=colombia">Colombia</a>
+                        <div class="dropdown-menu dropdown-hierarchical">
+                            <ul class="dropdown-continents">
+                                <li class="dropdown-continent active" data-continent="europe"><span>Europe</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></li>
+                                <li class="dropdown-continent" data-continent="asia"><span>Asia</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></li>
+                                <li class="dropdown-continent" data-continent="americas"><span>Americas</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></li>
+                                <li class="dropdown-continent" data-continent="africa"><span>Africa & Middle East</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></li>
+                                <li class="dropdown-continent" data-continent="oceania"><span>Oceania</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></li>
+                            </ul>
+                            <div class="dropdown-countries-panel">
+                                <div class="dropdown-countries active" data-continent="europe"><a href="destination.html?d=italy">Italy</a><a href="destination.html?d=greece">Greece</a><a href="destination.html?d=portugal">Portugal</a><a href="destination.html?d=spain">Spain</a><a href="destination.html?d=france">France</a><a href="destination.html?d=croatia">Croatia</a><a href="destination.html?d=iceland">Iceland</a><a href="destination.html?d=norway">Norway</a><a href="destination.html?d=netherlands">Netherlands</a><a href="destination.html?d=austria">Austria</a><a href="destination.html?d=switzerland">Switzerland</a></div>
+                                <div class="dropdown-countries" data-continent="asia"><a href="destination.html?d=bali">Bali</a><a href="destination.html?d=japan">Japan</a><a href="destination.html?d=thailand">Thailand</a><a href="destination.html?d=vietnam">Vietnam</a><a href="destination.html?d=srilanka">Sri Lanka</a><a href="destination.html?d=india">India</a><a href="destination.html?d=maldives">Maldives</a></div>
+                                <div class="dropdown-countries" data-continent="americas"><a href="destination.html?d=mexico">Mexico</a><a href="destination.html?d=costarica">Costa Rica</a><a href="destination.html?d=peru">Peru</a><a href="destination.html?d=colombia">Colombia</a><a href="destination.html?d=brazil">Brazil</a></div>
+                                <div class="dropdown-countries" data-continent="africa"><a href="destination.html?d=morocco">Morocco</a><a href="destination.html?d=egypt">Egypt</a><a href="destination.html?d=tanzania">Tanzania</a><a href="destination.html?d=jordan">Jordan</a></div>
+                                <div class="dropdown-countries" data-continent="oceania"><a href="destination.html?d=australia">Australia</a><a href="destination.html?d=newzealand">New Zealand</a></div>
                             </div>
                         </div>
                     </li>

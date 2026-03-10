@@ -263,21 +263,35 @@ p {
     position: relative;
 }
 
+.dropdown {
+    position: relative;
+}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
     left: 0;
     background: var(--color-white);
-    border-radius: 8px;
-    box-shadow: var(--shadow-lg);
-    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 0;
+    margin-top: 0;
     display: none;
-    gap: 2rem;
-    min-width: 500px;
-    max-width: calc(100vw - 2rem);
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition-normal);
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+/* Invisible bridge to keep hover connected */
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    right: -1rem;
+    height: 1.5rem;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -286,24 +300,78 @@ p {
     visibility: visible;
 }
 
-.dropdown-column h4 {
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--color-text-muted);
-    margin-bottom: 0.75rem;
+/* Hierarchical dropdown layout */
+.dropdown-hierarchical {
+    width: 380px;
 }
 
-.dropdown-column a {
+.dropdown-continents {
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    border-right: 1.5px solid var(--color-border);
+    min-width: 160px;
+    background: var(--color-cream);
+}
+
+.dropdown-continent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem 0.6rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    user-select: none;
+}
+
+.dropdown-continent svg {
+    opacity: 0.3;
+    transition: opacity 0.15s ease;
+}
+
+.dropdown-continent:hover,
+.dropdown-continent.active {
+    background: var(--color-white);
+    color: var(--color-secondary);
+}
+
+.dropdown-continent:hover svg,
+.dropdown-continent.active svg {
+    opacity: 0.7;
+    stroke: var(--color-secondary);
+}
+
+.dropdown-countries-panel {
+    flex: 1;
+    min-width: 180px;
+    padding: 0.75rem 0;
+}
+
+.dropdown-countries {
+    display: none;
+    flex-direction: column;
+    padding: 0 1.25rem;
+}
+
+.dropdown-countries.active {
+    display: flex;
+}
+
+.dropdown-countries a {
     display: block;
     padding: 0.4rem 0;
-    font-size: 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
     color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.15s ease;
 }
 
-.dropdown-column a:hover {
+.dropdown-countries a:hover {
     color: var(--color-secondary);
 }
 
@@ -1892,13 +1960,201 @@ section {
     padding-left: 0.25rem;
 }
 
-.cta-date-field input[type="date"] {
+.cta-date-field input[type="month"] {
     cursor: pointer;
 }
 
-.cta-date-field input[type="date"]::-webkit-calendar-picker-indicator {
+.cta-date-field input[type="month"]::-webkit-calendar-picker-indicator {
     opacity: 0.5;
     cursor: pointer;
+}
+
+/* Custom Month Picker (Google Flights style) */
+.cta-month-field {
+    position: relative;
+}
+
+.cta-month-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.85rem 1.15rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--color-text);
+    background: var(--color-white);
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    user-select: none;
+}
+
+.cta-month-trigger:hover {
+    border-color: var(--color-text-muted);
+}
+
+.cta-month-trigger:focus,
+.cta-month-trigger.active {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
+}
+
+.cta-month-icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
+
+.cta-month-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cta-month-text.placeholder {
+    color: var(--color-text-muted);
+}
+
+.cta-month-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 100;
+    width: 260px;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 0.75rem;
+    animation: monthDropIn 0.18s ease;
+}
+
+.cta-month-dropdown.open {
+    display: block;
+}
+
+@keyframes monthDropIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.cta-month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.2rem 0.6rem;
+}
+
+.cta-month-year {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.cta-month-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.cta-month-nav-btn:hover {
+    background: var(--color-cream);
+    color: var(--color-text);
+}
+
+.cta-month-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.cta-month-grid button {
+    padding: 0.55rem 0.25rem;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.cta-month-grid button:hover {
+    background: var(--color-cream);
+    border-color: var(--color-border);
+}
+
+.cta-month-grid button.selected {
+    background: var(--color-secondary);
+    color: var(--color-white);
+    border-color: var(--color-secondary);
+    font-weight: 600;
+}
+
+.cta-month-grid button.past {
+    color: var(--color-text-muted);
+    opacity: 0.4;
+    cursor: default;
+}
+
+.cta-month-grid button.past:hover {
+    background: transparent;
+    border-color: transparent;
+}
+
+.cta-month-flexible {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.55rem;
+    border: 1.5px dashed var(--color-border);
+    border-radius: 8px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.cta-month-flexible:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+    background: rgba(139, 115, 85, 0.04);
+}
+
+.cta-month-flexible.selected {
+    border-color: var(--color-secondary);
+    background: var(--color-secondary);
+    color: var(--color-white);
+    border-style: solid;
+    font-weight: 600;
+}
+
+.cta-date-field select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b7355' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
 }
 
 .cta-form textarea {
@@ -2225,6 +2481,21 @@ section {
     font-size: 0.875rem;
     color: var(--color-text-muted);
     margin: 0;
+}
+
+.footer-email {
+    margin-top: 0.4rem !important;
+    font-size: 0.82rem !important;
+}
+
+.footer-email a {
+    color: var(--color-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-email a:hover {
+    color: var(--color-accent);
 }
 
 /* ========================================
