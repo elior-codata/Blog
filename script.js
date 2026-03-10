@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initImageProtection();
     initImageEditMode();
     loadSavedImageEdits();
+    initCustomItineraryForm();
+    initDestinationPicker();
 });
 
 // ========================================
@@ -799,6 +801,16 @@ function addEditOverlays() {
         const overlay = createEditOverlay('gallery', i);
         item.appendChild(overlay);
     });
+
+    // About Us image
+    const aboutImgWrapper = document.getElementById('aboutImageWrapper');
+    if (aboutImgWrapper && !aboutImgWrapper.querySelector('.edit-image-overlay')) {
+        const overlay = createEditOverlay('about', 0);
+        aboutImgWrapper.appendChild(overlay);
+    }
+
+    // About Us text — make editable
+    enableAboutTextEditing(true);
 }
 
 function filmEditBlocker(e) {
@@ -809,6 +821,7 @@ function filmEditBlocker(e) {
 
 function removeEditOverlays() {
     document.querySelectorAll('.edit-image-overlay').forEach(el => el.remove());
+    enableAboutTextEditing(false);
 }
 
 function createEditOverlay(type, index) {
@@ -881,6 +894,8 @@ function getTargetImage(type, index) {
     } else if (type === 'gallery') {
         const items = document.querySelectorAll('.gallery-item img');
         return items[index] || null;
+    } else if (type === 'about') {
+        return document.getElementById('aboutImage') || null;
     }
     return null;
 }
@@ -903,6 +918,12 @@ function replaceImage(type, index, newSrc) {
         if (items[index]) {
             items[index].src = newSrc;
             items[index].style.opacity = '1';
+        }
+    } else if (type === 'about') {
+        const img = document.getElementById('aboutImage');
+        if (img) {
+            img.src = newSrc;
+            img.style.opacity = '1';
         }
     }
 }
@@ -957,13 +978,210 @@ function loadSavedImageEdits() {
         const index = parseInt(indexStr, 10);
         replaceImage(type, index, url);
     }
+    // Load saved About Us text
+    loadAboutTextEdits();
 }
 
 // loadSavedImageEdits is called from the main DOMContentLoaded handler
 // (after initFilmStrip clones frames, so clones also get updated)
 
+// ========================================
+// About Us Text Editing
+// ========================================
+
+const ABOUT_TEXT_IDS = ['aboutHeading', 'aboutParagraph1', 'aboutParagraph2'];
+let aboutSaveTimeout = null;
+
+function enableAboutTextEditing(enable) {
+    ABOUT_TEXT_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (enable) {
+            el.contentEditable = 'true';
+            el.classList.add('about-editable');
+            el.addEventListener('input', onAboutTextInput);
+            el.addEventListener('blur', saveAboutTextEdits);
+        } else {
+            el.contentEditable = 'false';
+            el.classList.remove('about-editable');
+            el.removeEventListener('input', onAboutTextInput);
+            el.removeEventListener('blur', saveAboutTextEdits);
+        }
+    });
+}
+
+function onAboutTextInput() {
+    clearTimeout(aboutSaveTimeout);
+    aboutSaveTimeout = setTimeout(saveAboutTextEdits, 1000);
+}
+
+function saveAboutTextEdits() {
+    const data = {};
+    ABOUT_TEXT_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = el.innerHTML;
+    });
+    localStorage.setItem('aboutTextEdits', JSON.stringify(data));
+}
+
+function loadAboutTextEdits() {
+    const saved = localStorage.getItem('aboutTextEdits');
+    if (!saved) return;
+    try {
+        const data = JSON.parse(saved);
+        for (const [id, html] of Object.entries(data)) {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = html;
+        }
+    } catch (e) {
+        console.error('Failed to load about text edits:', e);
+    }
+}
+
 // Make functions globally available
 window.toggleSiteEditMode = toggleSiteEditMode;
+
+// ========================================
+// Custom Itinerary Form
+// ========================================
+
+function initCustomItineraryForm() {
+    const form = document.getElementById('customItineraryForm');
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const dest = document.getElementById('ctaDestinationValue').value;
+        if (!dest) {
+            alert('Please choose a destination first.');
+            return;
+        }
+
+        const data = new FormData(form);
+        const entry = {};
+        data.forEach((v, k) => { entry[k] = v; });
+
+        // Save to localStorage
+        const requests = JSON.parse(localStorage.getItem('itinerary_requests') || '[]');
+        entry.submittedAt = new Date().toISOString();
+        requests.push(entry);
+        localStorage.setItem('itinerary_requests', JSON.stringify(requests));
+
+        // Show success
+        const success = document.getElementById('ctaFormSuccess');
+        if (success) success.style.display = 'block';
+        form.querySelector('.cta-button').style.display = 'none';
+        form.querySelectorAll('input, textarea, select, .dest-picker').forEach(el => {
+            el.style.opacity = '0.5';
+            el.style.pointerEvents = 'none';
+        });
+    });
+}
+
+// ========================================
+// Destination Picker (Continent / Country / Visual)
+// ========================================
+
+function initDestinationPicker() {
+    const picker = document.querySelector('.dest-picker');
+    if (!picker) return;
+
+    const hidden = document.getElementById('ctaDestinationValue');
+    const styleHidden = document.getElementById('ctaTravelStyleValue');
+    const label = document.getElementById('destSelectedLabel');
+    const textEl = document.getElementById('destSelectedText');
+    const clearBtn = document.getElementById('destClearBtn');
+    const pathChoice = document.getElementById('destPathChoice');
+    const panelKnow = document.getElementById('destPanelKnow');
+    const panelDiscover = document.getElementById('destPanelDiscover');
+    const otherInput = document.getElementById('destOtherInput');
+    const otherText = document.getElementById('destOtherText');
+    const otherConfirm = document.getElementById('destOtherConfirm');
+
+    // Path buttons
+    document.getElementById('destPathKnow').addEventListener('click', () => {
+        pathChoice.style.display = 'none';
+        panelKnow.style.display = 'block';
+    });
+    document.getElementById('destPathDiscover').addEventListener('click', () => {
+        pathChoice.style.display = 'none';
+        panelDiscover.style.display = 'block';
+    });
+
+    // Back buttons
+    document.getElementById('destBackKnow').addEventListener('click', () => {
+        panelKnow.style.display = 'none';
+        otherInput.style.display = 'none';
+        pathChoice.style.display = 'flex';
+    });
+    document.getElementById('destBackDiscover').addEventListener('click', () => {
+        panelDiscover.style.display = 'none';
+        pathChoice.style.display = 'flex';
+    });
+
+    // Destination card selection
+    function selectDest(value) {
+        hidden.value = value;
+        styleHidden.value = '';
+        picker.querySelectorAll('.dest-visual-card').forEach(el => el.classList.remove('selected'));
+        picker.querySelectorAll(`[data-dest="${value}"]`).forEach(el => el.classList.add('selected'));
+        textEl.innerHTML = 'Destination: <strong>' + value + '</strong>';
+        label.style.display = 'flex';
+        otherInput.style.display = 'none';
+    }
+
+    panelKnow.querySelectorAll('.dest-visual-card[data-dest]').forEach(card => {
+        card.addEventListener('click', () => {
+            if (card.dataset.dest === 'Other') {
+                // Show text input instead of selecting
+                picker.querySelectorAll('.dest-visual-card').forEach(el => el.classList.remove('selected'));
+                card.classList.add('selected');
+                otherInput.style.display = 'flex';
+                otherText.focus();
+            } else {
+                selectDest(card.dataset.dest);
+            }
+        });
+    });
+
+    // Other confirm
+    otherConfirm.addEventListener('click', () => {
+        const val = otherText.value.trim();
+        if (!val) { otherText.focus(); return; }
+        hidden.value = val;
+        styleHidden.value = '';
+        textEl.innerHTML = 'Destination: <strong>' + val + '</strong>';
+        label.style.display = 'flex';
+    });
+    otherText.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); otherConfirm.click(); }
+    });
+
+    // Style card selection (including Surprise Me)
+    function selectStyle(value) {
+        styleHidden.value = value;
+        hidden.value = 'Suggest based on style';
+        picker.querySelectorAll('.dest-visual-card').forEach(el => el.classList.remove('selected'));
+        picker.querySelectorAll(`[data-style="${value}"]`).forEach(el => el.classList.add('selected'));
+        textEl.innerHTML = 'Style: <strong>' + value + '</strong>';
+        label.style.display = 'flex';
+    }
+
+    panelDiscover.querySelectorAll('.dest-style-card').forEach(card => {
+        card.addEventListener('click', () => selectStyle(card.dataset.style));
+    });
+
+    // Clear
+    clearBtn.addEventListener('click', () => {
+        hidden.value = '';
+        styleHidden.value = '';
+        otherText.value = '';
+        otherInput.style.display = 'none';
+        picker.querySelectorAll('.dest-visual-card').forEach(el => el.classList.remove('selected'));
+        label.style.display = 'none';
+    });
+}
 
 // ========================================
 // Admin Authentication (Site-wide)

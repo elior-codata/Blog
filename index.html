@@ -220,6 +220,15 @@
             <div class="destinations-grid" id="monthDestinations">
                 <!-- Destinations will be populated by JavaScript -->
             </div>
+
+            <!-- Inline CTA: not sure what to choose -->
+            <div class="where-to-go-cta">
+                <span class="where-to-go-cta-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Not sure what to choose?
+                </span>
+                <a href="#custom-itinerary" class="where-to-go-cta-link">Contact us for a tailored itinerary specific to your needs &rarr;</a>
+            </div>
         </div>
     </section>
 
@@ -227,14 +236,14 @@
     <section id="about" class="about">
         <div class="container">
             <div class="about-grid">
-                <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702?w=800&q=80" alt="Couple traveling">
+                <div class="about-image" id="aboutImageWrapper">
+                    <img id="aboutImage" src="https://images.unsplash.com/photo-1522199710521-72d69614c702?w=800&q=80" alt="Couple traveling">
                 </div>
                 <div class="about-content">
                     <span class="section-subtitle">About Us</span>
-                    <h2>Hey, We're Sarah & Alex</h2>
-                    <p>We're two adventure seekers who traded our 9-5 jobs for a life of endless exploration. Since 2019, we've been traveling the world, documenting our journeys, and creating detailed travel guides to help you plan your perfect trip.</p>
-                    <p>From hidden waterfalls in Bali to ancient temples in Japan, we're on a mission to uncover the world's most beautiful places and share them with you.</p>
+                    <h2 id="aboutHeading">Hey, We're Sarah & Alex</h2>
+                    <p id="aboutParagraph1">We're two adventure seekers who traded our 9-5 jobs for a life of endless exploration. Since 2019, we've been traveling the world, documenting our journeys, and creating detailed travel guides to help you plan your perfect trip.</p>
+                    <p id="aboutParagraph2">From hidden waterfalls in Bali to ancient temples in Japan, we're on a mission to uncover the world's most beautiful places and share them with you.</p>
                     <div class="about-stats">
                         <div class="stat">
                             <span class="stat-number">50+</span>
@@ -258,20 +267,168 @@
         </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter">
+    <!-- Custom Itinerary CTA -->
+    <section class="custom-itinerary-cta" id="custom-itinerary">
         <div class="container">
-            <div class="newsletter-content">
-                <span class="section-subtitle">Stay Inspired</span>
-                <h2>The Travel Letter</h2>
-                <p>Get travel tips, destination guides, and behind-the-scenes stories delivered straight to your inbox.</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Your email address" required>
-                    <button type="submit">Subscribe</button>
+            <div class="cta-wrapper">
+                <div class="cta-badge">Personalized For You</div>
+                <h2>Ask Itinerant Pixels for a Custom Itinerary</h2>
+                <p>Get the best itinerary crafted personally by our founders. Tell us your dream destination, travel dates, and style and we'll design a tailor-made trip just for you.</p>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <span class="cta-feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        </span>
+                        <span>Any Destination</span>
+                    </div>
+                    <div class="cta-feature">
+                        <span class="cta-feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        </span>
+                        <span>Your Dates & Pace</span>
+                    </div>
+                    <div class="cta-feature">
+                        <span class="cta-feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </span>
+                        <span>Founder Curated</span>
+                    </div>
+                </div>
+                <form class="cta-form" id="customItineraryForm">
+                    <div class="cta-form-row">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+
+                    <!-- Destination Picker -->
+                    <input type="hidden" name="destination" id="ctaDestinationValue" required>
+                    <input type="hidden" name="travelStyle" id="ctaTravelStyleValue">
+                    <div class="dest-picker">
+                        <!-- Step 1: Choose path -->
+                        <div class="dest-path-choice" id="destPathChoice">
+                            <button type="button" class="dest-path-btn" id="destPathKnow">
+                                <span class="dest-path-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                </span>
+                                <span class="dest-path-text">I know where I want to go</span>
+                            </button>
+                            <button type="button" class="dest-path-btn" id="destPathDiscover">
+                                <span class="dest-path-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                                </span>
+                                <span class="dest-path-text">Help me decide</span>
+                            </button>
+                        </div>
+
+                        <!-- Panel A: I know where I want to go -->
+                        <div class="dest-panel" id="destPanelKnow" style="display:none">
+                            <button type="button" class="dest-back-btn" id="destBackKnow">&larr; Back</button>
+                            <div class="dest-visual-grid">
+                                <button type="button" class="dest-visual-card" data-dest="Italy">
+                                    <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=80" alt="Italy" loading="lazy">
+                                    <span class="dest-visual-label">Italy</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Greece">
+                                    <img src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=400&q=80" alt="Greece" loading="lazy">
+                                    <span class="dest-visual-label">Greece</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Japan">
+                                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&q=80" alt="Japan" loading="lazy">
+                                    <span class="dest-visual-label">Japan</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Bali">
+                                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=80" alt="Bali" loading="lazy">
+                                    <span class="dest-visual-label">Bali</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Thailand">
+                                    <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=400&q=80" alt="Thailand" loading="lazy">
+                                    <span class="dest-visual-label">Thailand</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Mexico">
+                                    <img src="https://images.unsplash.com/photo-1518638150340-f706e86654de?w=400&q=80" alt="Mexico" loading="lazy">
+                                    <span class="dest-visual-label">Mexico</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Portugal">
+                                    <img src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=400&q=80" alt="Portugal" loading="lazy">
+                                    <span class="dest-visual-label">Portugal</span>
+                                </button>
+                                <button type="button" class="dest-visual-card" data-dest="Peru">
+                                    <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=400&q=80" alt="Peru" loading="lazy">
+                                    <span class="dest-visual-label">Peru</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-surprise-card" data-dest="Other">
+                                    <div class="dest-surprise-inner">...</div>
+                                    <span class="dest-visual-label">Other</span>
+                                </button>
+                            </div>
+                            <div class="dest-other-input" id="destOtherInput" style="display:none">
+                                <input type="text" id="destOtherText" placeholder="Type your destination...">
+                                <button type="button" class="dest-other-confirm" id="destOtherConfirm">Confirm</button>
+                            </div>
+                        </div>
+
+                        <!-- Panel B: Help me decide (travel style) -->
+                        <div class="dest-panel" id="destPanelDiscover" style="display:none">
+                            <button type="button" class="dest-back-btn" id="destBackDiscover">&larr; Back</button>
+                            <p class="dest-style-prompt">What draws you most? Pick your vibe.</p>
+                            <div class="dest-visual-grid">
+                                <button type="button" class="dest-visual-card dest-style-card" data-style="Urban & City Life">
+                                    <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400&q=80" alt="Urban" loading="lazy">
+                                    <span class="dest-visual-label">Urban & City Life</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-style-card" data-style="Wildlife & Safari">
+                                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=400&q=80" alt="Wildlife" loading="lazy">
+                                    <span class="dest-visual-label">Wildlife & Safari</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-style-card" data-style="Nature & Mountains">
+                                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Nature" loading="lazy">
+                                    <span class="dest-visual-label">Nature & Mountains</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-style-card" data-style="Culture & History">
+                                    <img src="https://images.unsplash.com/photo-1533050487297-09b450131914?w=400&q=80" alt="Culture" loading="lazy">
+                                    <span class="dest-visual-label">Culture & History</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-style-card" data-style="Beach & Relaxation">
+                                    <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=400&q=80" alt="Beach" loading="lazy">
+                                    <span class="dest-visual-label">Beach & Relaxation</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-style-card" data-style="Adventure & Outdoors">
+                                    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=80" alt="Adventure" loading="lazy">
+                                    <span class="dest-visual-label">Adventure & Outdoors</span>
+                                </button>
+                                <button type="button" class="dest-visual-card dest-surprise-card dest-style-card" data-style="Surprise me!">
+                                    <div class="dest-surprise-inner">?</div>
+                                    <span class="dest-visual-label">Surprise Me!</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dest-selected-label" id="destSelectedLabel" style="display:none">
+                            ✓ <span id="destSelectedText"></span>
+                            <button type="button" class="dest-clear-btn" id="destClearBtn">&times;</button>
+                        </div>
+                    </div>
+                    <div class="cta-form-row cta-dates-row">
+                        <div class="cta-date-field">
+                            <label for="ctaDateFrom">From</label>
+                            <input type="date" id="ctaDateFrom" name="dateFrom">
+                        </div>
+                        <div class="cta-date-field">
+                            <label for="ctaDateTo">To</label>
+                            <input type="date" id="ctaDateTo" name="dateTo">
+                        </div>
+                    </div>
+                    <textarea name="details" placeholder="Tell us more: travel style, interests, group size, budget range..." rows="3"></textarea>
+                    <button type="submit" class="cta-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        Request Your Custom Itinerary
+                    </button>
+                    <p class="cta-form-success" id="ctaFormSuccess" style="display:none">✓ Request sent! We'll get back to you within 48 hours.</p>
                 </form>
-                <span class="newsletter-note">Join 50,000+ travelers • No spam, ever</span>
             </div>
         </div>
+    </section>
+
     </section>
 
     <!-- Gallery Preview -->
@@ -303,6 +460,22 @@
                     <h4>Mountains & Nature</h4>
                     <p>Epic landscapes & trails</p>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <span class="section-subtitle">Stay Inspired</span>
+                <h2>The Travel Letter</h2>
+                <p>Get travel tips, destination guides, and behind-the-scenes stories delivered straight to your inbox.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <span class="newsletter-note">Join 50,000+ travelers • No spam, ever</span>
             </div>
         </div>
     </section>
