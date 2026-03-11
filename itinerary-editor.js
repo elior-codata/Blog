@@ -23,16 +23,6 @@ let currentItinerary = {
 let isEditing = false;
 let hasUnsavedChanges = false;
 
-// Duration mapping
-const durationMap = {
-    '5days': '5 Days',
-    'week': '1 Week',
-    '10days': '10 Days',
-    '2weeks': '2 Weeks',
-    '3weeks': '3 Weeks',
-    'month': '1 Month'
-};
-
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeEditor();
@@ -99,15 +89,9 @@ function populateForm() {
     // Set destination
     document.getElementById('destinationSelect').value = currentItinerary.destination || '';
     
-    // Set duration
-    document.getElementById('durationSelect').value = currentItinerary.durationCode || '';
-    
     // Set title
     document.getElementById('itineraryTitle').value = currentItinerary.title || '';
     autoResizeTextarea(document.getElementById('itineraryTitle'));
-    
-    // Set regions
-    document.getElementById('itineraryRegions').value = currentItinerary.regions || '';
     
     // Set description
     document.getElementById('itineraryDescription').value = currentItinerary.description || '';
@@ -139,10 +123,10 @@ function populateForm() {
     
     updatePreview();
     updateStats();
+    updateDurationAndRoute();
 }
 
 function setupEventListeners() {
-    // Title auto-resize
     const titleInput = document.getElementById('itineraryTitle');
     titleInput.addEventListener('input', (e) => {
         autoResizeTextarea(e.target);
@@ -158,24 +142,10 @@ function setupEventListeners() {
         updatePreview();
     });
     
-    // Regions
-    document.getElementById('itineraryRegions').addEventListener('input', (e) => {
-        currentItinerary.regions = e.target.value;
-        markUnsaved();
-    });
-    
     // Destination select
     document.getElementById('destinationSelect').addEventListener('change', (e) => {
         currentItinerary.destination = e.target.value;
         markUnsaved();
-    });
-    
-    // Duration select
-    document.getElementById('durationSelect').addEventListener('change', (e) => {
-        currentItinerary.durationCode = e.target.value;
-        currentItinerary.duration = durationMap[e.target.value] || '';
-        markUnsaved();
-        updatePreview();
     });
     
     // Cover image URL
@@ -375,13 +345,56 @@ function addDay(dayData = null) {
     const container = document.getElementById('daysContainer');
     const dayNumber = container.children.length + 1;
     
+    // Initialize day data with parts structure
+    if (!dayData) {
+        dayData = {
+            dayNumber: dayNumber,
+            title: '',
+            parts: [{
+                title: '',
+                place: '',
+                description: '',
+                image: ''
+            }]
+        };
+        currentItinerary.days.push(dayData);
+    }
+    // Migrate old format (no parts) to new format
+    if (!dayData.parts) {
+        dayData.parts = [{
+            title: dayData.title || '',
+            place: '',
+            description: dayData.description || '',
+            image: dayData.image || ''
+        }];
+    }
+    
     const dayCard = document.createElement('div');
     dayCard.className = 'day-card';
     dayCard.dataset.day = dayNumber;
     
-    dayCard.innerHTML = `
+    dayCard.innerHTML = buildDayCardHTML(dayNumber, dayData);
+    container.appendChild(dayCard);
+    
+    // Attach image upload listeners for all parts
+    dayData.parts.forEach((_, partIdx) => {
+        attachPartImageListener(dayNumber, partIdx);
+    });
+    
+    updateDurationAndRoute();
+    updateStats();
+}
+
+function buildDayCardHTML(dayNumber, dayData) {
+    const partsHTML = dayData.parts.map((part, partIdx) => buildPartHTML(dayNumber, partIdx, part)).join('');
+    
+    return `
         <div class="day-card-header">
             <span class="day-number">Day ${dayNumber}</span>
+            <input type="text" class="day-header-title-input" 
+                   placeholder="Day title (e.g., Arrival in Rome)" 
+                   value="${escapeAttr(dayData.title || '')}"
+                   onchange="updateDayTitle(${dayNumber}, this.value)">
             <div class="day-card-actions">
                 <button class="day-action-btn" onclick="moveDayUp(${dayNumber})" title="Move Up">↑</button>
                 <button class="day-action-btn" onclick="moveDayDown(${dayNumber})" title="Move Down">↓</button>
@@ -389,49 +402,209 @@ function addDay(dayData = null) {
             </div>
         </div>
         <div class="day-card-body">
-            <input type="text" class="day-title-input" 
-                   placeholder="Day title (e.g., Arrival in Rome)" 
-                   value="${dayData?.title || ''}"
-                   onchange="updateDayData(${dayNumber}, 'title', this.value)">
-            <textarea class="day-description-input" 
-                      placeholder="Describe what to do, see, and experience on this day. Include specific recommendations, timings, and tips..."
-                      onchange="updateDayData(${dayNumber}, 'description', this.value)">${dayData?.description || ''}</textarea>
-            <div class="day-images-section">
-                <span class="day-images-label">📷 Add image URL (optional)</span>
-                <input type="text" class="day-image-url-input" 
-                       placeholder="https://images.unsplash.com/..."
-                       value="${dayData?.image || ''}"
-                       onchange="updateDayData(${dayNumber}, 'image', this.value)">
+            <div class="day-parts-container" id="dayParts_${dayNumber}">
+                ${partsHTML}
+            </div>
+            <button type="button" class="add-part-btn" onclick="addPart(${dayNumber})">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Activity
+            </button>
+        </div>
+    `;
+}
+
+function buildPartHTML(dayNumber, partIdx, part) {
+    const imagePreview = part.image 
+        ? `<div class="part-image-preview" id="partImgPreview_${dayNumber}_${partIdx}">
+               <img src="${part.image}" alt="Activity photo">
+               <button class="part-img-remove-btn" onclick="removePartImage(${dayNumber}, ${partIdx})">×</button>
+           </div>`
+        : `<div class="part-image-preview" id="partImgPreview_${dayNumber}_${partIdx}" style="display:none;">
+               <img src="" alt="Activity photo">
+               <button class="part-img-remove-btn" onclick="removePartImage(${dayNumber}, ${partIdx})">×</button>
+           </div>`;
+    
+    return `
+        <div class="day-part" data-part="${partIdx}">
+            <div class="part-header">
+                <span class="part-label">Activity ${partIdx + 1}</span>
+                ${partIdx > 0 ? `<button class="part-remove-btn" onclick="removePart(${dayNumber}, ${partIdx})" title="Remove activity">×</button>` : ''}
+            </div>
+            <div class="part-fields">
+                <input type="text" class="part-title-input" 
+                       placeholder="Activity title (e.g., Visit the Colosseum)"
+                       value="${escapeAttr(part.title || '')}"
+                       onchange="updatePartData(${dayNumber}, ${partIdx}, 'title', this.value)">
+                <input type="text" class="part-place-input" 
+                       placeholder="📍 Place name (e.g., Rome, Colosseum)"
+                       value="${escapeAttr(part.place || '')}"
+                       onchange="updatePartData(${dayNumber}, ${partIdx}, 'place', this.value)">
+                <textarea class="part-description-input" 
+                          placeholder="Describe this activity, tips, timings..."
+                          onchange="updatePartData(${dayNumber}, ${partIdx}, 'description', this.value)">${part.description || ''}</textarea>
+                <div class="part-image-section">
+                    <label class="part-image-upload-btn" for="partImgInput_${dayNumber}_${partIdx}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        Add Photo
+                    </label>
+                    <input type="file" id="partImgInput_${dayNumber}_${partIdx}" accept="image/*" hidden>
+                    ${imagePreview}
+                </div>
             </div>
         </div>
     `;
+}
+
+function escapeAttr(str) {
+    return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function attachPartImageListener(dayNumber, partIdx) {
+    const input = document.getElementById(`partImgInput_${dayNumber}_${partIdx}`);
+    if (!input) return;
+    input.addEventListener('change', function() {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Compress image before storing
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const maxW = 800, maxH = 600;
+                let w = img.width, h = img.height;
+                if (w > maxW) { h = h * maxW / w; w = maxW; }
+                if (h > maxH) { w = w * maxH / h; h = maxH; }
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                updatePartData(dayNumber, partIdx, 'image', dataUrl);
+                // Show preview
+                const preview = document.getElementById(`partImgPreview_${dayNumber}_${partIdx}`);
+                if (preview) {
+                    preview.querySelector('img').src = dataUrl;
+                    preview.style.display = 'block';
+                }
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function updateDayTitle(dayNumber, value) {
+    const dayIndex = dayNumber - 1;
+    if (currentItinerary.days[dayIndex]) {
+        currentItinerary.days[dayIndex].title = value;
+    }
+    markUnsaved();
+}
+
+function updatePartData(dayNumber, partIdx, field, value) {
+    const dayIndex = dayNumber - 1;
+    if (!currentItinerary.days[dayIndex]) return;
+    if (!currentItinerary.days[dayIndex].parts) currentItinerary.days[dayIndex].parts = [];
+    if (!currentItinerary.days[dayIndex].parts[partIdx]) {
+        currentItinerary.days[dayIndex].parts[partIdx] = { title: '', place: '', description: '', image: '' };
+    }
+    currentItinerary.days[dayIndex].parts[partIdx][field] = value;
+    markUnsaved();
+    updateDurationAndRoute();
+}
+
+function addPart(dayNumber) {
+    const dayIndex = dayNumber - 1;
+    if (!currentItinerary.days[dayIndex]) return;
+    if (!currentItinerary.days[dayIndex].parts) currentItinerary.days[dayIndex].parts = [];
     
-    container.appendChild(dayCard);
+    const newPart = { title: '', place: '', description: '', image: '' };
+    currentItinerary.days[dayIndex].parts.push(newPart);
     
-    // Update internal days array
-    if (!dayData) {
-        currentItinerary.days.push({
-            dayNumber: dayNumber,
-            title: '',
-            description: '',
-            image: ''
-        });
+    const partIdx = currentItinerary.days[dayIndex].parts.length - 1;
+    const partsContainer = document.getElementById(`dayParts_${dayNumber}`);
+    if (partsContainer) {
+        const partDiv = document.createElement('div');
+        partDiv.innerHTML = buildPartHTML(dayNumber, partIdx, newPart);
+        partsContainer.appendChild(partDiv.firstElementChild);
+        attachPartImageListener(dayNumber, partIdx);
+    }
+    markUnsaved();
+}
+
+function removePart(dayNumber, partIdx) {
+    const dayIndex = dayNumber - 1;
+    if (!currentItinerary.days[dayIndex] || !currentItinerary.days[dayIndex].parts) return;
+    if (currentItinerary.days[dayIndex].parts.length <= 1) return;
+    
+    currentItinerary.days[dayIndex].parts.splice(partIdx, 1);
+    renderDays();
+    markUnsaved();
+    updateDurationAndRoute();
+}
+
+function removePartImage(dayNumber, partIdx) {
+    const dayIndex = dayNumber - 1;
+    if (currentItinerary.days[dayIndex] && currentItinerary.days[dayIndex].parts[partIdx]) {
+        currentItinerary.days[dayIndex].parts[partIdx].image = '';
+    }
+    const preview = document.getElementById(`partImgPreview_${dayNumber}_${partIdx}`);
+    if (preview) {
+        preview.style.display = 'none';
+        preview.querySelector('img').src = '';
+    }
+    markUnsaved();
+}
+
+// ========================================
+// Auto-derive Duration & Route
+// ========================================
+
+function updateDurationAndRoute() {
+    // Duration = number of days
+    const numDays = currentItinerary.days.length;
+    let durationText = `${numDays} Day${numDays !== 1 ? 's' : ''}`;
+    if (numDays === 7) durationText = '1 Week';
+    else if (numDays === 14) durationText = '2 Weeks';
+    else if (numDays === 21) durationText = '3 Weeks';
+    else if (numDays === 30 || numDays === 31) durationText = '1 Month';
+    
+    currentItinerary.duration = durationText;
+    currentItinerary.durationCode = numDays <= 5 ? '5days' : numDays <= 7 ? 'week' : numDays <= 10 ? '10days' : numDays <= 14 ? '2weeks' : numDays <= 21 ? '3weeks' : 'month';
+    
+    const durationDisplay = document.getElementById('durationDisplay');
+    if (durationDisplay) durationDisplay.textContent = durationText;
+    
+    // Route = unique places from all parts, in order of appearance
+    const places = [];
+    currentItinerary.days.forEach(day => {
+        if (day.parts) {
+            day.parts.forEach(part => {
+                if (part.place && part.place.trim()) {
+                    const placeName = part.place.trim();
+                    if (!places.includes(placeName)) {
+                        places.push(placeName);
+                    }
+                }
+            });
+        }
+    });
+    
+    const routeText = places.length > 0 ? places.join(' → ') : '';
+    currentItinerary.regions = routeText;
+    
+    const routeDisplay = document.getElementById('routeDisplay');
+    if (routeDisplay) {
+        routeDisplay.textContent = routeText || 'Add places to your days to build the route';
+        routeDisplay.classList.toggle('has-route', places.length > 0);
     }
     
-    updateStats();
+    updatePreview();
 }
 
 function updateDayData(dayNumber, field, value) {
     const dayIndex = dayNumber - 1;
     if (currentItinerary.days[dayIndex]) {
-        currentItinerary.days[dayIndex][field] = value;
-    } else {
-        currentItinerary.days[dayIndex] = {
-            dayNumber: dayNumber,
-            title: '',
-            description: '',
-            image: ''
-        };
         currentItinerary.days[dayIndex][field] = value;
     }
     markUnsaved();
@@ -448,6 +621,7 @@ function deleteDay(dayNumber) {
         renderDays();
         markUnsaved();
         updateStats();
+        updateDurationAndRoute();
     }
 }
 
@@ -477,40 +651,30 @@ function renderDays() {
     
     currentItinerary.days.forEach((day, index) => {
         day.dayNumber = index + 1;
+        // Migrate old format
+        if (!day.parts) {
+            day.parts = [{
+                title: day.title || '',
+                place: '',
+                description: day.description || '',
+                image: day.image || ''
+            }];
+        }
         
         const dayCard = document.createElement('div');
         dayCard.className = 'day-card';
         dayCard.dataset.day = day.dayNumber;
         
-        dayCard.innerHTML = `
-            <div class="day-card-header">
-                <span class="day-number">Day ${day.dayNumber}</span>
-                <div class="day-card-actions">
-                    <button class="day-action-btn" onclick="moveDayUp(${day.dayNumber})" title="Move Up">↑</button>
-                    <button class="day-action-btn" onclick="moveDayDown(${day.dayNumber})" title="Move Down">↓</button>
-                    <button class="day-action-btn" onclick="deleteDay(${day.dayNumber})" title="Delete">×</button>
-                </div>
-            </div>
-            <div class="day-card-body">
-                <input type="text" class="day-title-input" 
-                       placeholder="Day title (e.g., Arrival in Rome)" 
-                       value="${day.title || ''}"
-                       onchange="updateDayData(${day.dayNumber}, 'title', this.value)">
-                <textarea class="day-description-input" 
-                          placeholder="Describe what to do, see, and experience on this day..."
-                          onchange="updateDayData(${day.dayNumber}, 'description', this.value)">${day.description || ''}</textarea>
-                <div class="day-images-section">
-                    <span class="day-images-label">📷 Add image URL (optional)</span>
-                    <input type="text" class="day-image-url-input" 
-                           placeholder="https://images.unsplash.com/..."
-                           value="${day.image || ''}"
-                           onchange="updateDayData(${day.dayNumber}, 'image', this.value)">
-                </div>
-            </div>
-        `;
-        
+        dayCard.innerHTML = buildDayCardHTML(day.dayNumber, day);
         container.appendChild(dayCard);
+        
+        // Attach image listeners for all parts
+        day.parts.forEach((_, partIdx) => {
+            attachPartImageListener(day.dayNumber, partIdx);
+        });
     });
+    
+    updateDurationAndRoute();
 }
 
 function markUnsaved() {
@@ -597,14 +761,23 @@ function showPreview() {
             
             <div style="margin-top: 2rem;">
                 <h3 style="font-family: 'Cormorant Garamond', serif; margin-bottom: 1.5rem; font-size: 1.8rem;">Day by Day</h3>
-                ${currentItinerary.days.map(day => `
+                ${currentItinerary.days.map(day => {
+                    const parts = day.parts || [{ title: day.title || '', place: '', description: day.description || '', image: day.image || '' }];
+                    return `
                     <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 12px; border-left: 4px solid #2c5530;">
-                        <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 0.5rem;">
-                            <span style="color: #2c5530;">Day ${day.dayNumber}</span> - ${day.title || 'Untitled'}
+                        <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 0.8rem;">
+                            <span style="color: #2c5530;">Day ${day.dayNumber}</span>${day.title ? ' - ' + day.title : ''}
                         </h4>
-                        <p style="font-family: 'Montserrat', sans-serif; color: #555; line-height: 1.7;">${day.description || 'No description yet.'}</p>
-                    </div>
-                `).join('')}
+                        ${parts.map((part, pi) => `
+                            <div style="margin-bottom: 1rem; ${pi > 0 ? 'padding-top: 1rem; border-top: 1px solid #e0e0e0;' : ''}">
+                                ${part.title ? `<h5 style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem;">${part.title}</h5>` : ''}
+                                ${part.place ? `<p style="font-family: 'Montserrat', sans-serif; color: #2c5530; font-size: 0.85rem; margin-bottom: 0.4rem;">📍 ${part.place}</p>` : ''}
+                                ${part.description ? `<p style="font-family: 'Montserrat', sans-serif; color: #555; line-height: 1.7; font-size: 0.9rem;">${part.description}</p>` : ''}
+                                ${part.image ? `<img src="${part.image}" style="max-width: 100%; border-radius: 8px; margin-top: 0.5rem;" alt="${part.title || 'Activity photo'}">` : ''}
+                            </div>
+                        `).join('')}
+                    </div>`;
+                }).join('')}
             </div>
         </div>
     `;
@@ -628,10 +801,8 @@ async function publishItinerary() {
         return;
     }
     
-    if (!currentItinerary.duration) {
-        alert('Please select a duration.');
-        return;
-    }
+    // Auto-calculate duration and route before publishing
+    updateDurationAndRoute();
     
     // Generate ID if new
     const isNew = !currentItinerary.id;
@@ -679,6 +850,11 @@ async function publishItinerary() {
 // Make functions available globally
 window.removeHighlight = removeHighlight;
 window.updateDayData = updateDayData;
+window.updateDayTitle = updateDayTitle;
+window.updatePartData = updatePartData;
+window.addPart = addPart;
+window.removePart = removePart;
+window.removePartImage = removePartImage;
 window.deleteDay = deleteDay;
 window.moveDayUp = moveDayUp;
 window.moveDayDown = moveDayDown;

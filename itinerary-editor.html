@@ -65,15 +65,7 @@
                     </div>
                     <div class="meta-group">
                         <label>Duration</label>
-                        <select id="durationSelect">
-                            <option value="">Select Duration</option>
-                            <option value="5days">5 Days</option>
-                            <option value="week">1 Week</option>
-                            <option value="10days">10 Days</option>
-                            <option value="2weeks">2 Weeks</option>
-                            <option value="3weeks">3 Weeks</option>
-                            <option value="month">1 Month</option>
-                        </select>
+                        <div class="meta-computed" id="durationDisplay">0 Days</div>
                     </div>
                 </div>
 
@@ -82,9 +74,10 @@
                     <textarea id="itineraryTitle" placeholder="Your amazing itinerary title..." rows="1"></textarea>
                 </div>
 
-                <!-- Regions/Route -->
+                <!-- Route (auto-derived from day places) -->
                 <div class="regions-wrapper">
-                    <input type="text" id="itineraryRegions" placeholder="Route: Rome → Florence → Venice → Cinque Terre">
+                    <label class="meta-computed-label">Route</label>
+                    <div class="meta-computed route-display" id="routeDisplay">Add places to your days to build the route</div>
                 </div>
 
                 <!-- Short Description -->

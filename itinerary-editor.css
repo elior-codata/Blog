@@ -246,6 +246,44 @@
     border-color: #2c5530;
 }
 
+/* Auto-computed meta fields */
+.meta-computed {
+    padding: 0.8rem 1rem;
+    background: #f0f7f1;
+    border: 1px solid #d4e8d6;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: #2c5530;
+    font-weight: 500;
+}
+
+.meta-computed-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.route-display {
+    min-height: 2.4rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    color: #888;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.route-display.has-route {
+    color: #2c5530;
+    font-style: normal;
+    font-weight: 500;
+}
+
 /* Title */
 .title-wrapper {
     margin-bottom: 1rem;
@@ -438,12 +476,35 @@
     padding: 1rem 1.5rem;
     background: linear-gradient(135deg, #2c5530, #3d7242);
     color: white;
+    gap: 0.8rem;
 }
 
 .day-number {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
     font-weight: 600;
+    white-space: nowrap;
+}
+
+.day-header-title-input {
+    flex: 1;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.day-header-title-input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.day-header-title-input:focus {
+    outline: none;
+    background: rgba(255,255,255,0.25);
 }
 
 .day-card-actions {
@@ -473,77 +534,229 @@
     padding: 1.5rem;
 }
 
-.day-title-input {
+/* Day Parts */
+.day-parts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.day-part {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.day-part:hover {
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.part-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.part-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #2c5530;
+}
+
+.part-remove-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: #f0f0f0;
+    color: #999;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.part-remove-btn:hover {
+    background: #fee;
+    color: #c00;
+}
+
+.part-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.part-title-input {
     width: 100%;
     border: none;
     border-bottom: 1px solid #e5e5e5;
-    padding: 0.5rem 0;
-    margin-bottom: 1rem;
+    padding: 0.4rem 0;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 600;
     color: #1a1a1a;
+    background: transparent;
 }
 
-.day-title-input::placeholder {
+.part-title-input::placeholder {
     color: #bbb;
 }
 
-.day-title-input:focus {
+.part-title-input:focus {
     outline: none;
     border-bottom-color: #2c5530;
 }
 
-.day-description-input {
+.part-place-input {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    padding: 0.5rem 0.7rem;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #2c5530;
+    background: #f0f7f1;
+}
+
+.part-place-input::placeholder {
+    color: #8cb890;
+}
+
+.part-place-input:focus {
+    outline: none;
+    border-color: #2c5530;
+}
+
+.part-description-input {
     width: 100%;
     border: none;
     padding: 0.5rem;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #555;
-    line-height: 1.7;
-    min-height: 100px;
+    line-height: 1.6;
+    min-height: 80px;
     resize: vertical;
-    background: #fafafa;
-    border-radius: 8px;
+    background: transparent;
+    border-radius: 6px;
 }
 
-.day-description-input::placeholder {
+.part-description-input::placeholder {
     color: #999;
 }
 
-.day-description-input:focus {
+.part-description-input:focus {
     outline: none;
     background: #f5f5f5;
 }
 
-/* Day Images */
-.day-images-section {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #eee;
+/* Part Image Upload */
+.part-image-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-top: 0.3rem;
 }
 
-.day-images-label {
+.part-image-upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
     font-size: 0.8rem;
     color: #666;
-    margin-bottom: 0.5rem;
-    display: block;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.day-image-url-input {
+.part-image-upload-btn:hover {
+    border-color: #2c5530;
+    color: #2c5530;
+}
+
+.part-image-preview {
+    position: relative;
+    max-width: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.part-image-preview img {
     width: 100%;
-    padding: 0.6rem 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.part-img-remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: background 0.2s ease;
+}
+
+.part-img-remove-btn:hover {
+    background: rgba(200,0,0,0.8);
+}
+
+/* Add Part Button */
+.add-part-btn {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px dashed #ccc;
+    background: transparent;
+    border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
     font-size: 0.85rem;
+    color: #888;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    transition: all 0.2s ease;
 }
 
-.day-image-url-input:focus {
-    outline: none;
+.add-part-btn:hover {
     border-color: #2c5530;
+    color: #2c5530;
+    background: rgba(44, 85, 48, 0.03);
+}
+
+.add-part-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.add-part-btn:hover svg {
+    transform: rotate(90deg);
 }
 
 /* Add Day Button */
