@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Detail - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="trip-detail.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <div class="nav-links-group">
+                <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="my-trips.html" class="nav-link">← My Trips</a></li>
+                    <li class="nav-item"><a href="travel-feed.html" class="nav-link">Feed</a></li>
+                </ul>
+            </div>
+            <div class="nav-right-group">
+                <div class="nav-user-menu" id="navUserMenu">
+                    <button class="nav-user-btn" id="navUserBtn">
+                        <span class="nav-user-avatar" id="navUserAvatar">?</span>
+                        <span class="nav-user-name" id="navUserName">User</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="trip-page">
+        <!-- Trip Hero -->
+        <section class="trip-hero" id="tripHero">
+            <div class="trip-hero-overlay">
+                <div class="trip-hero-content">
+                    <div class="trip-hero-status" id="tripStatus">Upcoming</div>
+                    <h1 id="tripTitle">Trip</h1>
+                    <p class="trip-hero-dest" id="tripDest">Destination</p>
+                    <p class="trip-hero-dates" id="tripDates">Dates</p>
+                    <button class="trip-share-btn" id="shareToFeed" onclick="shareToFeed()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        <span id="shareBtnText">Share to Feed</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab Navigation -->
+        <section class="trip-tabs-bar">
+            <div class="trip-tabs-inner">
+                <button class="trip-tab active" data-tab="plan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Plan
+                </button>
+                <button class="trip-tab" data-tab="bookings">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    Bookings
+                </button>
+                <button class="trip-tab" data-tab="photos">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Photos
+                </button>
+                <button class="trip-tab" data-tab="albums">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                    Albums
+                </button>
+            </div>
+        </section>
+
+        <!-- Plan Section -->
+        <section class="trip-section" id="sectionPlan">
+            <div class="section-header">
+                <h2>Travel Plan</h2>
+                <button class="btn-icon-text" onclick="openPlanModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Day
+                </button>
+            </div>
+            <div class="plan-timeline" id="planTimeline">
+                <!-- JS rendered -->
+            </div>
+            <div class="empty-section" id="planEmpty" style="display:none">
+                <p>No plan yet. Add days to build your itinerary.</p>
+            </div>
+        </section>
+
+        <!-- Bookings Section -->
+        <section class="trip-section" id="sectionBookings" style="display:none">
+            <div class="section-header">
+                <h2>Bookings</h2>
+                <button class="btn-icon-text" onclick="openBookingModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Booking
+                </button>
+            </div>
+            <div class="bookings-list" id="bookingsList"></div>
+            <div class="empty-section" id="bookingsEmpty" style="display:none">
+                <p>No bookings yet. Add flights, hotels, and activities.</p>
+            </div>
+        </section>
+
+        <!-- Photos Section -->
+        <section class="trip-section" id="sectionPhotos" style="display:none">
+            <div class="section-header">
+                <h2>Photos</h2>
+                <label class="btn-icon-text" for="photoUpload">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Photos
+                </label>
+                <input type="file" id="photoUpload" accept="image/*" multiple style="display:none">
+            </div>
+            <div class="photos-grid" id="photosGrid"></div>
+            <div class="empty-section" id="photosEmpty" style="display:none">
+                <p>No photos yet. Upload images from your trip.</p>
+            </div>
+        </section>
+
+        <!-- Albums Section -->
+        <section class="trip-section" id="sectionAlbums" style="display:none">
+            <div class="section-header">
+                <h2>Albums</h2>
+                <button class="btn-icon-text" onclick="openAlbumModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Create Album
+                </button>
+            </div>
+            <div class="albums-grid" id="albumsGrid"></div>
+            <div class="empty-section" id="albumsEmpty" style="display:none">
+                <p>No albums yet. Create an album and add your favorite photos.</p>
+            </div>
+        </section>
+
+        <!-- Album Viewer Overlay -->
+        <div class="album-viewer" id="albumViewer" style="display:none">
+            <div class="album-viewer-header">
+                <button class="btn-back" onclick="closeAlbumViewer()">← Back to Albums</button>
+                <h2 id="albumViewerTitle">Album</h2>
+                <div class="album-viewer-actions">
+                    <button class="btn-icon-text small" onclick="openAlbumPhotoPicker()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Photos
+                    </button>
+                    <button class="btn-icon-text small danger" onclick="deleteCurrentAlbum()">Delete Album</button>
+                </div>
+            </div>
+            <div class="album-viewer-grid" id="albumViewerGrid"></div>
+        </div>
+
+        <!-- Photo Lightbox -->
+        <div class="lightbox" id="lightbox" style="display:none">
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <button class="lightbox-prev" onclick="lightboxNav(-1)">&#8249;</button>
+            <img id="lightboxImg" src="" alt="Photo">
+            <button class="lightbox-next" onclick="lightboxNav(1)">&#8250;</button>
+        </div>
+    </main>
+
+    <!-- Plan Day Modal -->
+    <div class="modal-overlay" id="planModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="planModalTitle">Add Day</h2>
+                <button class="modal-close" onclick="closePlanModal()">&times;</button>
+            </div>
+            <form id="planForm">
+                <div class="form-group">
+                    <label for="planDayTitle">Day Title</label>
+                    <input type="text" id="planDayTitle" placeholder="e.g. Day 1 - Arrival in Rome" required>
+                </div>
+                <div class="form-group">
+                    <label for="planDayDate">Date</label>
+                    <input type="date" id="planDayDate">
+                </div>
+                <div class="form-group">
+                    <label for="planDayNotes">Activities / Notes</label>
+                    <textarea id="planDayNotes" rows="5" placeholder="Morning: Visit Colosseum&#10;Afternoon: Trastevere walk&#10;Evening: Dinner at..."></textarea>
+                </div>
+                <input type="hidden" id="planEditId">
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closePlanModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="bookingModalTitle">Add Booking</h2>
+                <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="bookingType">Type</label>
+                    <select id="bookingType">
+                        <option value="flight">✈️ Flight</option>
+                        <option value="hotel">🏨 Hotel</option>
+                        <option value="activity">🎫 Activity</option>
+                        <option value="transport">🚗 Transport</option>
+                        <option value="restaurant">🍽️ Restaurant</option>
+                        <option value="other">📌 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookingTitle">Title</label>
+                    <input type="text" id="bookingTitle" placeholder="e.g. Flight to Rome" required>
+                </div>
+                <div class="form-row-2col">
+                    <div class="form-group">
+                        <label for="bookingDate">Date</label>
+                        <input type="date" id="bookingDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingTime">Time</label>
+                        <input type="time" id="bookingTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bookingRef">Reference / Confirmation #</label>
+                    <input type="text" id="bookingRef" placeholder="Booking ref...">
+                </div>
+                <div class="form-group">
+                    <label for="bookingNotes">Notes</label>
+                    <textarea id="bookingNotes" rows="2" placeholder="Additional details..."></textarea>
+                </div>
+                <input type="hidden" id="bookingEditId">
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Album Create Modal -->
+    <div class="modal-overlay" id="albumModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Create Album</h2>
+                <button class="modal-close" onclick="closeAlbumModal()">&times;</button>
+            </div>
+            <form id="albumForm">
+                <div class="form-group">
+                    <label for="albumName">Album Name</label>
+                    <input type="text" id="albumName" placeholder="e.g. Best Sunsets" required>
+                </div>
+                <div class="form-group">
+                    <label for="albumDesc">Description</label>
+                    <textarea id="albumDesc" rows="2" placeholder="What's this album about?"></textarea>
+                </div>
+                <div class="form-group" id="albumPhotoSelect">
+                    <label>Select Photos</label>
+                    <div class="album-photo-picker" id="albumPhotoPicker">
+                        <p class="picker-empty">No photos in this trip yet. Go to Photos tab to upload some first.</p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAlbumModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Album</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Album Photo Picker Modal (pick from trip photos) -->
+    <div class="modal-overlay" id="albumPickerModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Add Photos to Album</h2>
+                <button class="modal-close" onclick="closeAlbumPhotoPicker()">&times;</button>
+            </div>
+            <div style="padding:1.5rem">
+                <p style="font-family:'Montserrat',sans-serif;font-size:0.82rem;color:#666;margin-bottom:1rem">Select photos from your trip to add to this album.</p>
+                <div class="album-photo-picker" id="albumViewerPicker"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAlbumPhotoPicker()">Cancel</button>
+                    <button type="button" class="btn-primary" onclick="confirmAlbumPhotoPicker()">Add Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="trip-detail.js"></script>
+</body>
+</html>

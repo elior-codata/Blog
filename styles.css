@@ -209,6 +209,22 @@ p {
     margin-left: auto;
 }
 
+.nav-account-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    transition: background 0.2s;
+}
+.nav-account-link:hover {
+    background: rgba(255,255,255,0.25);
+}
+.nav-account-link svg { stroke: #fff; }
+
 .nav-menu {
     display: flex;
     align-items: center;

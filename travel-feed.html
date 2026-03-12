@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Feed - Itinerant Pixels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="travel-feed.css">
+</head>
+<body>
+    <nav class="navbar feed-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="Itinerant Pixels"></a>
+            <div class="nav-links-group">
+                <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="my-trips.html" class="nav-link">My Trips</a></li>
+                    <li class="nav-item"><a href="my-trips.html#albums" class="nav-link">My Albums</a></li>
+                    <li class="nav-item"><a href="travel-feed.html" class="nav-link active">Feed</a></li>
+                </ul>
+            </div>
+            <div class="nav-right-group">
+                <div class="nav-user-menu" id="navUserMenu">
+                    <button class="nav-user-btn" id="navUserBtn">
+                        <span class="nav-user-avatar" id="navUserAvatar">?</span>
+                        <span class="nav-user-name" id="navUserName">User</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="nav-user-dropdown" id="navUserDropdown">
+                        <a href="my-trips.html">My Trips</a>
+                        <a href="index.html">Home Page</a>
+                        <a href="#" id="logoutBtn">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile (Instagram-style) -->
+    <header class="feed-profile" id="feedProfile">
+        <div class="feed-cover" id="feedCover">
+            <label class="feed-cover-edit" for="coverInput" title="Change cover photo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Change cover
+            </label>
+            <input type="file" id="coverInput" accept="image/*" style="display:none">
+        </div>
+        <div class="feed-profile-bar">
+            <div class="feed-avatar-wrap">
+                <div class="feed-avatar-big" id="feedAvatarBig">?</div>
+                <label class="feed-avatar-edit" for="avatarInput" title="Change photo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </label>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none">
+            </div>
+            <div class="feed-profile-info">
+                <div class="feed-profile-top-row">
+                    <h1 class="feed-profile-name" id="feedProfileName">Traveler</h1>
+                    <button class="feed-edit-btn" id="feedEditProfileBtn">Edit Profile</button>
+                </div>
+                <p class="feed-profile-bio" id="feedProfileBio">Explorer &bull; Storyteller &bull; Wanderer</p>
+                <div class="feed-stats">
+                    <div class="feed-stat">
+                        <span class="feed-stat-num" id="statTrips">0</span>
+                        <span class="feed-stat-label">Trips</span>
+                    </div>
+                    <div class="feed-stat">
+                        <span class="feed-stat-num" id="statCountries">0</span>
+                        <span class="feed-stat-label">Destinations</span>
+                    </div>
+                    <div class="feed-stat">
+                        <span class="feed-stat-num" id="statPhotos">0</span>
+                        <span class="feed-stat-label">Photos</span>
+                    </div>
+                    <div class="feed-stat">
+                        <span class="feed-stat-num" id="statDays">0</span>
+                        <span class="feed-stat-label">Days traveled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Edit Profile Modal -->
+    <div class="feed-modal-overlay" id="editProfileModal" style="display:none">
+        <div class="feed-modal-card">
+            <div class="feed-modal-header">
+                <h2>Edit Profile</h2>
+                <button class="feed-modal-close" id="closeEditProfile">&times;</button>
+            </div>
+            <div class="feed-modal-body">
+                <div class="ep-avatar-section">
+                    <div class="ep-avatar-preview" id="epAvatarPreview">?</div>
+                    <div>
+                        <label class="ep-upload-btn" for="epAvatarFile">Change Photo</label>
+                        <input type="file" id="epAvatarFile" accept="image/*" style="display:none">
+                        <p style="font-size:0.7rem;color:#bbb;margin-top:0.35rem;">JPG, PNG, GIF</p>
+                    </div>
+                </div>
+                <form id="editProfileForm">
+                    <div class="ep-form-group">
+                        <label>Display Name</label>
+                        <input type="text" id="epDisplayName" placeholder="Your name">
+                    </div>
+                    <div class="ep-form-group">
+                        <label>Bio</label>
+                        <textarea id="epBio" rows="3" placeholder="Write a short bio..."></textarea>
+                    </div>
+                    <div class="ep-form-actions">
+                        <button type="button" class="ep-cancel-btn" id="epCancel">Cancel</button>
+                        <button type="submit" class="ep-save-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Friends Bar -->
+    <section class="feed-search-section">
+        <div class="feed-search-bar">
+            <div class="feed-search-input-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="friendSearch" placeholder="Search travelers by name or email..." autocomplete="off">
+            </div>
+            <div class="feed-search-results" id="searchResults" style="display:none"></div>
+        </div>
+        <div class="feed-following-bar" id="followingBar" style="display:none">
+            <span class="following-label">Following</span>
+            <div class="following-chips" id="followingChips"></div>
+        </div>
+    </section>
+
+    <!-- Feed Tabs (My Feed / My Trips) -->
+    <section class="feed-tabs-section">
+        <div class="feed-view-tabs">
+            <button class="feed-view-tab active" data-view="feed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Feed
+            </button>
+            <button class="feed-view-tab" data-view="mine">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                My Trips
+            </button>
+        </div>
+    </section>
+
+    <!-- World Map -->
+    <section class="feed-map-section">
+        <div class="feed-map-wrap">
+            <canvas id="worldMap" width="1000" height="500"></canvas>
+            <div class="map-pins" id="mapPins"></div>
+        </div>
+    </section>
+
+    <!-- Trip Timeline Feed -->
+    <section class="feed-timeline-section">
+        <div class="feed-section-header">
+            <h2 id="feedSectionTitle">Travel Feed</h2>
+            <div class="feed-filter-pills">
+                <button class="feed-pill active" data-filter="all">All</button>
+                <button class="feed-pill" data-filter="upcoming">Upcoming</button>
+                <button class="feed-pill" data-filter="ongoing">Ongoing</button>
+                <button class="feed-pill" data-filter="past">Past</button>
+            </div>
+        </div>
+
+        <div class="feed-timeline" id="feedTimeline">
+            <!-- JS rendered -->
+        </div>
+
+        <div class="feed-empty" id="feedEmpty" style="display:none">
+            <div class="feed-empty-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 0 0-16 0c0 3 2.7 7 8 11.7z"/></svg>
+            </div>
+            <h3>No trips in your feed</h3>
+            <p>Share your trips or follow friends to see their journeys!</p>
+            <a href="my-trips.html" class="feed-cta-btn">Create a Trip</a>
+        </div>
+    </section>
+
+    <!-- Year Highlights -->
+    <section class="feed-highlights" id="feedHighlights" style="display:none">
+        <div class="feed-section-header">
+            <h2>Year in Review</h2>
+        </div>
+        <div class="highlights-scroll" id="highlightsScroll"></div>
+    </section>
+
+    <footer class="feed-footer">
+        <p>&copy; Itinerant Pixels &bull; Your journeys, beautifully captured</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="travel-feed.js"></script>
+</body>
+</html>

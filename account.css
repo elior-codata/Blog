@@ -1,0 +1,314 @@
+/* ========================================
+   Account / Auth Styles
+   ======================================== */
+
+.account-page {
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+/* ── Auth Container ── */
+.auth-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 80px);
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.auth-card {
+    padding: 3rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-header h1 {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin-bottom: 0.3rem;
+}
+
+.auth-header p {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+/* ── Auth Tabs ── */
+.auth-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.8rem;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.auth-tab {
+    background: none;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: var(--transition-fast);
+}
+
+.auth-tab:hover {
+    color: var(--color-text);
+}
+
+.auth-tab.active {
+    color: var(--color-secondary);
+    border-bottom-color: var(--color-secondary);
+}
+
+/* ── Form ── */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-group label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+}
+
+.form-group input {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    background: var(--color-white);
+    transition: var(--transition-fast);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    accent-color: var(--color-secondary);
+    width: 16px;
+    height: 16px;
+}
+
+.forgot-link {
+    font-size: 0.82rem;
+    color: var(--color-secondary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+.auth-submit {
+    margin-top: 0.5rem;
+    padding: 0.85rem;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    letter-spacing: 0.02em;
+}
+
+.auth-submit:hover {
+    background: #1a2a38;
+    transform: translateY(-1px);
+}
+
+.auth-error {
+    color: #e74c3c;
+    font-size: 0.82rem;
+    min-height: 1.2em;
+    text-align: center;
+}
+
+/* ── Divider ── */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+}
+
+.auth-divider span {
+    padding: 0 1rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+/* ── Social Login ── */
+.social-login {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.7rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-white);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.social-btn:hover {
+    background: var(--color-light-gray);
+    border-color: #ccc;
+}
+
+/* ── Auth Side Panel ── */
+.auth-side {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #1a2a38 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 0 0;
+}
+
+.auth-side-content {
+    padding: 3rem;
+    color: var(--color-white);
+    max-width: 400px;
+}
+
+.auth-side-content h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    line-height: 1.3;
+}
+
+.auth-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.92rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+.auth-features li svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.auth-side-links {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.auth-side-link {
+    display: inline-block;
+    padding: 0.55rem 1.2rem;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.auth-side-link:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-side {
+        display: none;
+    }
+
+    .auth-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .form-row-2col {
+        grid-template-columns: 1fr;
+    }
+}
